@@ -5,14 +5,14 @@
         "version": "11.69.42.14"
     },
     "startup_app": {
-        "name": "openfin-react-hooks",
+        "name": "openfin-dewmo-app",
         "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
         "url": "http://localhost:3000",
         "applicationIcon": "http://localhost:3000/favicon.ico",
         "autoShow": true,
-        "minWidth": 1200,
+        "minWidth": 400,
         "defaultWidth": 1200,
-        "minHeight": 825,
+        "minHeight": 400,
         "defaultHeight": 825,
         "frame": true,
         "contextMenu": true
@@ -31,8 +31,8 @@
     ],
     "shortcut": {
         "company": "",
-        "description": "openfin react hooks demo",
-        "name": "Openfin react hooks demo",
+        "description": "openfin demo app",
+        "name": "Openfin demo app",
         "icon": "http://localhost:3000/favicon.ico"
     }
 }

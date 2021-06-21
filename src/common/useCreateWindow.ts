@@ -1,11 +1,11 @@
 import {_Window} from "openfin/_v2/api/window/window";
 import {WindowOption} from "openfin/_v2/api/window/windowOption";
 import {useEffect, useState} from "react";
-import uuidv4 from "uuid/v4";
+import {v4 as uuidv4} from 'uuid';
 
 export default (initialOptions: WindowOption = {}) => {
     const [options, setOptions] = useState(initialOptions);
-    const [win, setWin] = useState();
+    const [win, setWin] = useState<_Window>();
 
     useEffect(() => {
         let newWindow: _Window;
@@ -26,7 +26,7 @@ export default (initialOptions: WindowOption = {}) => {
 
         return () => {
             if (newWindow) {
-                newWindow.close();
+                newWindow.close()
             }
         };
     }, [options]);

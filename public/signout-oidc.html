@@ -1,0 +1,17 @@
+<html lang="en">
+	<body>
+		<h1>Logged out</h1>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.10.1/oidc-client.min.js"></script>
+		<script>
+			const manager = new Oidc.UserManager();
+			manager
+				.signoutRedirectCallback()
+				.then(() => {
+					window.location.href = "https://www.portal-test.covar.io";
+				})
+				.catch(function(e) {
+					console.error(e);
+				});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,19 @@
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.10.1/oidc-client.min.js"></script>
+    <script>
+        Oidc.Log.logger = console;
+        Oidc.Log.level = Oidc.Log.INFO;
+        new Oidc.UserManager({response_mode: "query"}).signinSilentCallback().then((user) => {
+            debugger
+            window.location.href = "/";
+        }).catch(err => {
+            debugger
+            console.log(err);
+        });
+    </script>
+</head>
+<body>
+Logging you in...
+</body>
+</html>

@@ -24,13 +24,13 @@ export abstract class HubService {
         return this.hubConnection?.state ?? HubConnectionState.Disconnected;
     }
 
-    private _accessToken!: string;
+    private _accessToken: any;
 
     protected get accessToken() {
         return this._accessToken;
     }
 
-    private _hubConnection!: HubConnection | null;
+    private _hubConnection: HubConnection | undefined;
 
     protected get hubConnection(): HubConnection {
         return this.ensureConnection();
@@ -41,7 +41,7 @@ export abstract class HubService {
     }
 
     public async registerUser(user: User): Promise<void> {
-        this._accessToken = user.access_token;
+        this._accessToken = user.access_token ?? '';
     }
 
     public abstract start(): Promise<HubConnectionState>;
@@ -54,7 +54,7 @@ export abstract class HubService {
             } catch (error) {
                 await this.hubConnection.stop();
             } finally {
-                this._hubConnection = null;
+                this._hubConnection = undefined;
             }
         }
         return this.state;
@@ -71,6 +71,7 @@ export abstract class HubService {
         if (!this._hubConnection) {
             this._hubConnection = new HubConnectionBuilder()
                 .withUrl(this.endPoint, {accessTokenFactory: () => this.accessToken})
+                //.withHubProtocol(new MessagePackHubProtocol())
                 .withAutomaticReconnect(this.retryDelays)
                 .configureLogging(this.isDevelopment ? LogLevel.Information : LogLevel.Error)
                 .build();

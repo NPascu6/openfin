@@ -1,57 +1,38 @@
-import MomentUtils from "@date-io/moment";
-import {Grid} from "@material-ui/core";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {MuiPickersUtilsProvider} from "@material-ui/pickers";
-import React, {useEffect} from "react";
-import Topbar from "./components/app/Topbar";
-import {RoutesSwitch} from "./router/Routes";
+import {responsiveFontSizes} from "@material-ui/core";
+import {Theme, ThemeProvider} from "@material-ui/core/styles";
+import React, {useEffect, useState} from "react";
 import {initApp} from "./services/app/AppService";
 import {useDispatch, useSelector} from "react-redux";
-import Sidebar from "./components/app/Sidebar";
 import {RootState} from "./redux/slices/rootSlice";
-
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: "flex",
-            height: "100vh",
-        },
-        appBarSpacer: theme.mixins.toolbar,
-        content: {
-            flex: 1,
-        },
-        pageArea: {
-            padding: theme.spacing(1),
-            flex: 1,
-            overflow: "auto",
-        },
-    })
-);
+import AppLoading from "./components/loading/AppLoading";
+import {BrowserRouter} from "react-router-dom";
+import {darkTheme, lightTheme} from "./themes";
 
 const App = () => {
-    const classes = useStyles();
     const dispatch = useDispatch()
     const profile = useSelector((state: RootState) => state.app.profile);
+    const [theme, setTheme] = useState<Theme>();
+    const isDarkTheme = useSelector((state: RootState) => state.app.isDarkTheme);
+    const isAppReady = useSelector((state: RootState) => state.app.isAppReady);
 
     useEffect(() => {
-        if (!profile)
+        setTheme(responsiveFontSizes(isDarkTheme ? darkTheme : lightTheme));
+    }, [isDarkTheme])
+
+    useEffect(() => {
+        if (!profile && !isAppReady){
+            debugger
             dispatch(initApp());
-    }, [dispatch, profile])
+        }
+
+    }, [dispatch, profile, isAppReady])
 
     return (
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-            <div className={classes.root}>
-                <Topbar/>
-                <Sidebar/>
-                <Grid container direction="column" className={classes.content}>
-                    <Grid className={classes.appBarSpacer}/>
-                    <Grid container className={classes.pageArea}>
-                        <RoutesSwitch/>
-                    </Grid>
-                </Grid>
-            </div>
-        </MuiPickersUtilsProvider>
+        <BrowserRouter>
+            <ThemeProvider theme={theme ?? lightTheme}>
+                <AppLoading/>
+            </ThemeProvider>
+        </BrowserRouter>
     );
 };
 

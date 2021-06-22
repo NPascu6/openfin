@@ -1,17 +1,18 @@
 import {User} from "oidc-client";
 import {AppDispatch, AppThunk} from "../../redux/store";
-import {setIsAppReady, setUserProfile} from "../../redux/slices/app/appSlice";
+import {setIsAppReady, setUserProfile, setUser} from "../../redux/slices/app/appSlice";
 import {setOtcCurrentQuote, setOtcOrderStatus} from "../../redux/slices/otc/otcSlice";
 import AuthService from "../auth/AuthService";
 import OtcService from "../otc/OtcService";
+import {fetchFirm} from "../../redux/thunks/bookkeeper";
 
 export const initApp = (): AppThunk => async (dispatch: AppDispatch) => {
-
     await initAuthService(dispatch);
 };
 
 const dispatchAppProps = async (dispatch: AppDispatch, user: User) => {
     dispatch(setUserProfile(user.profile));
+    dispatch(setUser(user))
 
     await OtcService.registerUser(user);
 
@@ -30,6 +31,9 @@ const initAuthService = async (dispatch: AppDispatch) => {
     const authService = AuthService;
     const authServiceEvents = authService.userManager.events;
 
+    const firm = await fetchFirm();
+    await dispatch(firm);
+
     authServiceEvents.addUserSignedOut(async () => {
         await AuthService.startSigninMainWindow();
     });
@@ -47,7 +51,7 @@ const initAuthService = async (dispatch: AppDispatch) => {
             try {
                 const user = await authService.iframeSignin();
                 await dispatchAppProps(dispatch, user);
-                debugger
+
             } catch (err) {
                 if (err.session_state) {
                     if (err.message === "login_required" ||
@@ -62,7 +66,7 @@ const initAuthService = async (dispatch: AppDispatch) => {
         }
     } catch (err) {
         console.error(err);
-        dispatch(setIsAppReady(true));
+        dispatch(setIsAppReady(false));
     }
 };
 

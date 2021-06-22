@@ -11,11 +11,11 @@ const Ticker = () => {
     const [number, setNumber] = useState(0)
 
     const getNumber = () => {
-        if(!number){
+        if (!number) {
             setNumber(randomIntFromInterval(0.0001, 43.000))
         }
 
-        setTimeout(getNumber,100)
+        setTimeout(getNumber, 100)
     }
 
     const [,] = useDebounce(
@@ -23,7 +23,6 @@ const Ticker = () => {
             if (!number) {
                 console.log(number)
                 getNumber()
-                debugger
                 OtcService.start()
             }
         },
@@ -33,9 +32,9 @@ const Ticker = () => {
 
 
     return (
-            <Grid item>
-                {number}
-            </Grid>
+        <Grid item>
+            {number}
+        </Grid>
     )
 }
 

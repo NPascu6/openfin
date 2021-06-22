@@ -102,7 +102,6 @@ const SignoutDialog = () => {
 
     const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
         e.preventDefault();
-        debugger
         if (value === true) {
             await AuthService.startSignoutMainWindow();
             return;

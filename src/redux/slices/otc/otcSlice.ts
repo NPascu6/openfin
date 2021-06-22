@@ -10,6 +10,7 @@ export interface OtcState {
     isQuoting?: boolean;
     quoteRequest?: OtcQuoteRequest;
     orderStatusEntry?: OtcOrderStatusEntry;
+    accounts?: Account[];
 }
 
 const initialState: OtcState = {
@@ -49,11 +50,15 @@ const otcSlice = createSlice({
                 state.account = action.payload;
             }
         },
+        setOtcAccounts(state, action: PayloadAction<Account[]>) {
+            state.accounts = action.payload;
+        },
     },
 });
 
 export const {
     setOtcAccount,
+    setOtcAccounts,
     setOtcCurrentQuote,
     setOtcOrderStatus
 } = otcSlice.actions;

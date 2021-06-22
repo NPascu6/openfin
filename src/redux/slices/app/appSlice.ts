@@ -1,6 +1,6 @@
 import {Color} from "@material-ui/lab";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Profile} from "oidc-client";
+import {Profile, User} from "oidc-client";
 
 const {REACT_APP_STAGE} = process.env;
 
@@ -25,6 +25,7 @@ export interface MainState {
     locale: string;
     profile?: Profile;
     notification?: Notification
+    user?: User;
 }
 
 const initialState: MainState = {
@@ -41,6 +42,9 @@ const appSlice = createSlice({
     name: "app",
     initialState,
     reducers: {
+        setUser(state, action: PayloadAction<User>) {
+            state.user = action.payload
+        },
         setIsDarkTheme(state, action: PayloadAction<boolean>) {
             state.isDarkTheme = action.payload;
         },
@@ -78,6 +82,7 @@ const appSlice = createSlice({
 });
 
 export const {
+    setUser,
     setIsDarkTheme,
     setTopbarTitle,
     setIsSideBarOpen,

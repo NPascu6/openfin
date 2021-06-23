@@ -22,13 +22,22 @@ const channelSlice = createSlice({
     initialState,
     reducers: {
         setWindow(state, action: PayloadAction<any>) {
-            return {
-                ...state,
-                childWindows: {
-                    [action.payload.identity.name]: action.payload,
-                    ...state.childWindows,
-                },
-            };
+                return {
+                    ...state,
+                    childWindows: {
+                        [action.payload.identity.name]: action.payload,
+                        ...state.childWindows,
+                    },
+                };
+        },
+        setChildWindow(state, action: PayloadAction<any>) {
+                return {
+                    ...state,
+                    childWindows: {
+                        [action.payload.identity.name]: action.payload,
+                        ...state.childWindows,
+                    },
+                };
         },
         setChanelName(state, action: PayloadAction<string>) {
             state.name = action.payload
@@ -57,6 +66,7 @@ const channelSlice = createSlice({
                     state.childWindows[windowName].close();
                 }
             }
+            state.childWindows = []
 
             return state;
         },
@@ -102,7 +112,8 @@ export const {
     decrement,
     setChanelName,
     addClientToList,
-    clearClients
+    clearClients,
+    setChildWindow
 } = channelSlice.actions;
 
 export default channelSlice.reducer;

@@ -7,25 +7,31 @@ import {RootState} from "./redux/slices/rootSlice";
 import AppLoading from "./components/loading/AppLoading";
 import {BrowserRouter} from "react-router-dom";
 import {darkTheme, lightTheme} from "./themes";
+import {setUser, setUserProfile} from "./redux/slices/app/appSlice";
 
 const App = () => {
     const dispatch = useDispatch()
-    const profile = useSelector((state: RootState) => state.app.profile);
     const [theme, setTheme] = useState<Theme>();
-    const isDarkTheme = useSelector((state: RootState) => state.app.isDarkTheme);
-    const isAppReady = useSelector((state: RootState) => state.app.isAppReady);
+    const {isDarkTheme, isAppReady, user} = useSelector((state: RootState) => state.app);
 
     useEffect(() => {
         setTheme(responsiveFontSizes(isDarkTheme ? darkTheme : lightTheme));
     }, [isDarkTheme])
 
     useEffect(() => {
-        if (!profile && !isAppReady){
-            debugger
+        if(!user)
             dispatch(initApp());
-        }
+    }, [dispatch, user])
 
-    }, [dispatch, profile, isAppReady])
+    useEffect(() => {
+        if (isAppReady) {
+            console.log(`App ready: ${isAppReady}`)
+            console.log(user)
+            dispatch(setUser(user))
+            if (user)
+                dispatch(setUserProfile(user.profile))
+        }
+    }, [isAppReady, user, dispatch])
 
     return (
         <BrowserRouter>

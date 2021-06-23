@@ -17,7 +17,7 @@ export class AuthService {
         client_id: REACT_APP_AUTH_CLIENT,
         redirect_uri: `${REACT_APP_BASE_URI}/signin-oidc.html`,
         silent_redirect_uri: `${REACT_APP_BASE_URI}/signin-oidc.html`,
-        post_logout_redirect_uri: "https://www.covar.io/",
+        post_logout_redirect_uri: `${REACT_APP_BASE_URI}/signin-oidc.html`,
         // Number of seconds before the token expires to trigger the `tokenExpiring` event
         accessTokenExpiringNotificationTime: 10,
         response_type: "code",

@@ -35,7 +35,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {NavLink, withRouter} from "react-router-dom";
 import {rootRouteDefinition, RouteDefinition} from "../../router/Routes";
 import AuthService from "../../services/auth/AuthService";
-import {setIsSideBarOpen, setIsSignoutOpen, setNavLinkState} from "../../redux/slices/app/appSlice";
+import {
+    setIsSideBarOpen,
+    setIsSignoutOpen,
+    setNavLinkState,
+    setUser,
+    setUserProfile
+} from "../../redux/slices/app/appSlice";
 import {RootState} from "../../redux/slices/rootSlice";
 
 const {REACT_APP_VERSION, REACT_APP_STAGE} = process.env;
@@ -103,14 +109,12 @@ const SignoutDialog = () => {
     const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
         e.preventDefault();
         if (value === true) {
+            dispatch(setUser(null))
+            dispatch(setUserProfile(null))
+            await AuthService.removeUser();
             await AuthService.startSignoutMainWindow();
             return;
         }
-        else{
-
-        }
-
-
         dispatch(setIsSignoutOpen(false));
     };
 
@@ -216,7 +220,7 @@ const NavLinkSection = ({props}: { props: any }) => {
 
     const renderNavLinks = (profile: Profile, routes: RouteDefinition [] | undefined, isSubLink: boolean = false) => {
         if (routes)
-            return routes.map((route, index) => {
+            return routes.filter(r => !r.name?.includes('Client')).map((route, index) => {
                 if (!route.children) {
                     return (
                         <List key={`${index}-${route.path}`} component="div" disablePadding>

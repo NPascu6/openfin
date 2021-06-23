@@ -1,21 +1,26 @@
 import {useState} from "react";
 import {Grid} from "@material-ui/core";
 import {useDebounce} from "react-use";
-import OtcService from "../../services/otc/OtcService";
 
 function randomIntFromInterval(min: number, max: number) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-const Ticker = () => {
+interface TickerProps {
+    setLocalTicker: (number: number) => any
+}
+
+const Ticker = ({setLocalTicker} : TickerProps) => {
     const [number, setNumber] = useState(0)
 
     const getNumber = () => {
         if (!number) {
-            setNumber(randomIntFromInterval(0.0001, 43.000))
+            let random = randomIntFromInterval(0.0001, 43.000)
+            setNumber(random)
+            setLocalTicker(number)
         }
 
-        setTimeout(getNumber, 100)
+        setTimeout(getNumber, 2000)
     }
 
     const [,] = useDebounce(
@@ -23,7 +28,6 @@ const Ticker = () => {
             if (!number) {
                 console.log(number)
                 getNumber()
-                OtcService.start()
             }
         },
         1500,

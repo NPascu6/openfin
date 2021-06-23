@@ -23,9 +23,9 @@ export interface MainState {
     isSignoutOpen: boolean;
     navLinkState: any;
     locale: string;
-    profile?: Profile;
+    profile?: Profile | null;
     notification?: Notification
-    user?: User;
+    user?: User | null;
 }
 
 const initialState: MainState = {
@@ -42,7 +42,7 @@ const appSlice = createSlice({
     name: "app",
     initialState,
     reducers: {
-        setUser(state, action: PayloadAction<User>) {
+        setUser(state, action: PayloadAction<User | null | undefined>) {
             state.user = action.payload
         },
         setIsDarkTheme(state, action: PayloadAction<boolean>) {
@@ -67,7 +67,7 @@ const appSlice = createSlice({
         setLocale(state, action: PayloadAction<string>) {
             state.locale = action.payload;
         },
-        setUserProfile(state, action: PayloadAction<Profile>) {
+        setUserProfile(state, action: PayloadAction<Profile | null>) {
             state.profile = action.payload;
         },
         setNavLinkState(state, action: PayloadAction<string>) {

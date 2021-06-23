@@ -3,7 +3,9 @@ import {Route, Switch} from "react-router-dom";
 import ForbiddenPage from "../pages/errors/403";
 import NotFoundPage from "../pages/errors/404";
 import MainWindow from "../pages/mainWindow/MainWindow";
+import ChannelProvider from "../pages/channels/ChanelWindow";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import ChannelClient from "../pages/channels/ChanelClient";
 
 export interface RouteDefinition {
     path: string;
@@ -26,6 +28,18 @@ export const rootRouteDefinition: RouteDefinition =
                 page: MainWindow,
                 icon: DashboardIcon,
             },
+            {
+                path: '/channel-provider',
+                name: "Chanel Window Provider",
+                page: ChannelProvider,
+                icon: DashboardIcon,
+            },
+            {
+                path: '/channel-client',
+                name: "Chanel Window Client",
+                page: ChannelClient,
+                icon: DashboardIcon,
+            }
         ]
     }
 

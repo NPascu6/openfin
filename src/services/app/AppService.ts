@@ -1,10 +1,7 @@
 import {User} from "oidc-client";
 import {AppDispatch, AppThunk} from "../../redux/store";
 import {setIsAppReady, setUserProfile, setUser} from "../../redux/slices/app/appSlice";
-import {setOtcCurrentQuote, setOtcOrderStatus} from "../../redux/slices/otc/otcSlice";
 import AuthService from "../auth/AuthService";
-import OtcService from "../otc/OtcService";
-import {fetchFirm} from "../../redux/thunks/bookkeeper";
 
 export const initApp = (): AppThunk => async (dispatch: AppDispatch) => {
     await initAuthService(dispatch);
@@ -13,17 +10,6 @@ export const initApp = (): AppThunk => async (dispatch: AppDispatch) => {
 const dispatchAppProps = async (dispatch: AppDispatch, user: User) => {
     dispatch(setUserProfile(user.profile));
     dispatch(setUser(user))
-
-    await OtcService.registerUser(user);
-
-    OtcService.quoteUpdate.subscribe(quote => {
-        dispatch(setOtcCurrentQuote(quote));
-    });
-
-    OtcService.orderStatusUpdate.subscribe(orderStatus => {
-        dispatch(setOtcOrderStatus(orderStatus));
-    });
-
     dispatch(setIsAppReady(true));
 }
 
@@ -31,16 +17,9 @@ const initAuthService = async (dispatch: AppDispatch) => {
     const authService = AuthService;
     const authServiceEvents = authService.userManager.events;
 
-    const firm = await fetchFirm();
-    await dispatch(firm);
-
     authServiceEvents.addUserSignedOut(async () => {
         await AuthService.startSigninMainWindow();
     });
-
-    authServiceEvents.addUserLoaded(async user => {
-        await OtcService.registerUser(user);
-    })
 
     try {
         let user = await authService.getUser();

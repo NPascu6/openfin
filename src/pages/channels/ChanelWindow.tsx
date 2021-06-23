@@ -73,11 +73,16 @@ const Component = () => {
         dispatch(setWindow(newWindow));
     };
 
+    const closeWindowRemote = (name: string) => {
+        debugger
+        dispatch(close(name))
+    }
+
     return (
         <div>
             <div>
                 {statuses && statuses.map((c, key) => (
-                    <div key={key}>{key + ' - ' + c.msg}</div>
+                    <div key={key}>{key + ' - ' + c.msg}<button onClick={() => closeWindowRemote(c.name)}>close</button></div>
                 ))}
                 <strong>Provider Status:</strong>
             </div>

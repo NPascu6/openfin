@@ -47,8 +47,15 @@ const channelSlice = createSlice({
         close: function (state, action: PayloadAction<any>) {
             const {windowName} = action.payload;
 
-            if (state.childWindows[windowName]) {
-                state.childWindows[windowName].close();
+            if(windowName === undefined){
+                if (state.childWindows[action.payload]) {
+                    state.childWindows[action.payload].close();
+                }
+            }
+            else{
+                if (state.childWindows[windowName]) {
+                    state.childWindows[windowName].close();
+                }
             }
 
             return state;

@@ -7,6 +7,7 @@ import {WindowOption} from "openfin/_v2/api/window/windowOption";
 import {CHILD_BODY_AS_HOOK_OPTION} from "./ChildWindowBody";
 import {setChildWindow} from "../../redux/slices/chanel/chanelSlice";
 import ILaunchConfig from "openfin-react-hooks/demo/src/pages/childWindow/ILaunchConfig";
+import Topbar from "../../components/app/Topbar";
 
 const CHANNEL_NAME = "test";
 
@@ -70,6 +71,7 @@ const ChildWindow: React.FC = () => {
 
     return (
         <div>
+            <Topbar/>
             <Ticker setLocalTicker={setLocalTicker}/>
             <button onClick={() => handleChildLaunch()}>Launch</button>
             <button onClick={async () => await client.dispatch("increment")}>

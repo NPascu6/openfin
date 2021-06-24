@@ -10,21 +10,21 @@
         "url": "http://localhost:3000",
         "applicationIcon": "http://localhost:3000/favicon.ico",
         "clearChildSubscriptionsOnReload": true,
-        "autoShow": true,
-        "minWidth": 400,
-        "defaultWidth": 1900,
-        "defaultCentered": true,
-        "defaultTop": 10,
-        "saveWindowState": true,
         "backgroundColor": "#CB3514",
+        "contextMenu": true,
+        "autoShow": true,
+        "defaultWidth": 1400,
+        "maxWidth": 1900,
+        "minWidth": 480,
+        "defaultHeight": 200,
+        "maxHeight": 250,
         "minHeight": 150,
-        "height": 200,
-        "cornerRounding": {
-            "width": 5,
-            "height": 5
-        },
-        "frame": true,
-        "contextMenu": true
+        "defaultTop": 50,
+        "resizable": true,
+        "maximizable": true,
+        "frame": false,
+        "saveWindowState": false,
+        "loadErrorMessage": "There was an error loading the application."
     },
     "services": [
         {

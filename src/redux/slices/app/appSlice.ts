@@ -19,7 +19,6 @@ export interface MainState {
     topbarTitle: TopbarTitle;
     isAppReady: boolean;
     isDarkTheme: boolean;
-    isSideBarOpen: boolean;
     isSignoutOpen: boolean;
     navLinkState: any;
     locale: string;
@@ -29,10 +28,9 @@ export interface MainState {
 }
 
 const initialState: MainState = {
-    topbarTitle: {title: "Covario AG"},
+    topbarTitle: {title: "React Openfin App :: Demo :: Covario AG"},
     isAppReady: false,
     isDarkTheme: false,
-    isSideBarOpen: false,
     isSignoutOpen: false,
     navLinkState: {},
     locale: "en-US"
@@ -50,9 +48,6 @@ const appSlice = createSlice({
         },
         setIsSignoutOpen(state, action: PayloadAction<boolean>) {
             state.isSignoutOpen = action.payload;
-        },
-        setIsSideBarOpen(state, action: PayloadAction<boolean>) {
-            state.isSideBarOpen = action.payload;
         },
         setIsAppReady(state, action: PayloadAction<boolean>) {
             state.isAppReady = action.payload;
@@ -85,7 +80,6 @@ export const {
     setUser,
     setIsDarkTheme,
     setTopbarTitle,
-    setIsSideBarOpen,
     setIsSignoutOpen,
     setIsAppReady,
     setLocale,

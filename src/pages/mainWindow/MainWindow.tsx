@@ -18,17 +18,51 @@ import {
 
 const CHANNEL_NAME = "test";
 
+const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any: any) => any, setNumberOfChildWindows: (any: any) => any) => {
+    const getConfig = (top: number, left: number, width: number, height: number) => {
+        return {
+            autoShow: true,
+            defaultHeight: height,
+            defaultTop: top,
+            defaultLeft: left,
+            defaultWidth: width,
+            frame: false,
+            name: uuidv4(),
+            url: "/child-window",
+        }
+    }
+
+    switch (numberOfChildWindows) {
+        case 0 : {
+            const newWindow = await window.fin.Window.create(getConfig(255, 10, 1095, 400));
+            dispatch(setWindow(newWindow));
+            setNumberOfChildWindows(numberOfChildWindows + 1)
+            break;
+        }
+        case 1 : {
+            const newWindow = await window.fin.Window.create(getConfig(255, 1110, 300, 400));
+            dispatch(setWindow(newWindow));
+            setNumberOfChildWindows(numberOfChildWindows + 1)
+            break;
+        }
+        case 2 : {
+            const newWindow = await window.fin.Window.create(getConfig(660, 10, 1400, 200));
+            dispatch(setWindow(newWindow));
+            setNumberOfChildWindows(numberOfChildWindows + 1)
+            break;
+        }
+        default: {
+
+        }
+    }
+};
+
 const MainWindow = () => {
     const dispatch = useDispatch();
     const {isAppReady} = useSelector((state: RootState) => state.app);
     const {childWindows, count, statuses} = useSelector((state: RootState) => state.channel);
     const [localCount, setLocalCount] = useState(0)
-
-    useEffect(() => {
-        if (count) {
-            setLocalCount(count)
-        }
-    }, [count])
+    const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
 
     const channelActions = [
         {
@@ -48,7 +82,25 @@ const MainWindow = () => {
             topic: "close",
         },
     ];
+
     const {provider} = useChannelProvider(CHANNEL_NAME, channelActions);
+
+    const closeWindowRemote = (name: string) => {
+        dispatch(close(name))
+    }
+
+    const handleCloseAll = () => {
+        const application = fin.desktop.Application.getCurrent();
+
+        application.getChildWindows(function (children) {
+            children.forEach(function (childWindow) {
+                console.log("Showing child: " + childWindow.name);
+                childWindow.close();
+            });
+        });
+        dispatch(clearClients())
+        setNumberOfChildWindows(0)
+    }
 
     useEffect(() => {
         if (provider) {
@@ -62,58 +114,38 @@ const MainWindow = () => {
         Prism.highlightAll();
     }, [provider, dispatch]);
 
-    const createWindow = async () => {
-        const newWindow = await window.fin.Window.create({
-            autoShow: true,
-            defaultHeight: 420,
-            defaultTop: 50 + Object.keys(childWindows).length * 20,
-            defaultWidth: 680,
-            frame: true,
-            name: uuidv4(),
-            url: "/child-window",
-        });
-
-        dispatch(setWindow(newWindow));
-    };
+    useEffect(() => {
+        if (isAppReady && numberOfChildWindows < 3) {
+            createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)
+        }
+    }, [numberOfChildWindows, isAppReady, dispatch])
 
     useEffect(() => {
-        if(isAppReady && Object.keys(childWindows).length > 4){
+        if (Object.keys(childWindows).length > 0) {
+            const application = fin.desktop.Application.getCurrent();
+            const mainWindow = fin.desktop.Window.getCurrent()
+
+            application.getChildWindows(function (children) {
+                children.forEach(function (childWindow) {
+                    childWindow.joinGroup(mainWindow);
+                });
+            });
+        } else if (Object.keys(childWindows).length > 4) {
             const application = fin.desktop.Application.getCurrent();
 
             application.getChildWindows(function (children) {
                 children.forEach(function (childWindow) {
-                    console.log("Showing child: " + childWindow.name);
                     childWindow.close();
                 });
             });
-
-            dispatch(clearClients())
         }
+    }, [childWindows])
 
-        const createWindow = async () => {
-            const newWindow = await window.fin.Window.create({
-                autoShow: true,
-                defaultHeight: 420,
-                defaultTop: 50 + Object.keys(childWindows).length * 20,
-                defaultWidth: 680,
-                frame: true,
-                name: uuidv4(),
-                url: "/child-window",
-            });
-
-            dispatch(setWindow(newWindow));
-        };
-
-        if(isAppReady && Object.keys(childWindows).length === 0){
-            for(let i = 0; i< 4; i++){
-                createWindow()
-            }
+    useEffect(() => {
+        if (count) {
+            setLocalCount(count)
         }
-    }, [isAppReady, childWindows, dispatch])
-
-    const closeWindowRemote = (name: string) => {
-        dispatch(close(name))
-    }
+    }, [count])
 
     return (
         <div>
@@ -125,8 +157,11 @@ const MainWindow = () => {
                 ))}
                 <strong>Provider Status:</strong>
             </div>
-            <button onClick={() => dispatch(clearClients())}>Clear clients</button>
-            <button onClick={() => createWindow()}>Connect Client</button>
+            <button onClick={() => handleCloseAll()}>Clear clients</button>
+            <button
+                onClick={() => createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)}>Connect
+                Client
+            </button>
             <div><strong>Count:</strong> {localCount}</div>
         </div>
     );

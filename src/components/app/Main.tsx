@@ -4,7 +4,6 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import React from "react";
 import {RoutesSwitch} from "../../router/Routes";
-import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import {useLocation} from "react-use";
 
@@ -35,7 +34,6 @@ const Main = () => {
             <div className={classes.root}>
                 <CssBaseline/>
                 {(location.pathname === '/' || location.pathname === '/channel-provider')&& <Topbar/>}
-                {(location.pathname === '/' || location.pathname === '/channel-provider') &&<Sidebar/>}
                 <Grid container direction="column" className={classes.content}>
                     <Grid className={classes.appBarSpacer}/>
                     <Grid container className={classes.pageArea}>

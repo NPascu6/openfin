@@ -44,7 +44,7 @@
     "yarn": "^1.22.10"
   },
   "scripts": {
-    "launch": "openfin --launch --config ./public/app.dev.json",
+    "launch": "openfin --launch --config ./public/app.dev.json --disable-web-security --user-data-dir=\"C:/ChromeDevSession\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

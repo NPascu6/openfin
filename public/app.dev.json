@@ -5,7 +5,7 @@
         "version": "11.69.42.14"
     },
     "startup_app": {
-        "name": "openfin-dewmo-app",
+        "name": "openfin-demo-app",
         "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
         "url": "http://localhost:3000",
         "applicationIcon": "http://localhost:3000/favicon.ico",

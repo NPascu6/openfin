@@ -66,7 +66,6 @@ const channelSlice = createSlice({
                     state.childWindows[windowName].close();
                 }
             }
-            state.childWindows = []
 
             return state;
         },

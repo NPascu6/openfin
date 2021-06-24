@@ -1,12 +1,10 @@
-import {useDispatch} from "react-redux";
-import {decrement, increment} from "../../redux/slices/chanel/chanelSlice";
+import {useChannelClient} from "openfin-react-hooks";
+
+const CHANNEL_NAME = "test";
 
 export function CHILD_BODY_AS_HOOK_OPTION(): JSX.Element {
-    const dispatch = useDispatch()
-
+    const {client} = useChannelClient(CHANNEL_NAME);
     const close = () => {
-
-
         const application = fin.desktop.Application.getCurrent();
 
         application.getChildWindows(function (children) {
@@ -17,12 +15,11 @@ export function CHILD_BODY_AS_HOOK_OPTION(): JSX.Element {
         });
     }
 
-
     return <div>
-        <button onClick={() => dispatch(increment())}>
+        <button onClick={async() => await client.dispatch('increment')}>
             Increment
         </button>
-        <button onClick={() => dispatch(decrement())}>
+        <button onClick={async() => await client.dispatch('decrement')}>
             Decrement
         </button>
         <button onClick={() => close()}>

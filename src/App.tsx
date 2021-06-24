@@ -13,20 +13,23 @@ const App = () => {
     const dispatch = useDispatch()
     const [theme, setTheme] = useState<Theme>();
     const {isDarkTheme, isAppReady, user} = useSelector((state: RootState) => state.app);
+    const {childWindows} = useSelector((state: RootState) => state.channel);
 
     useEffect(() => {
         setTheme(responsiveFontSizes(isDarkTheme ? darkTheme : lightTheme));
     }, [isDarkTheme])
 
     useEffect(() => {
-        if(!user)
-            dispatch(initApp());
-    }, [dispatch, user])
+        if (!user) {
+            dispatch(initApp())
+        }
+    }, [dispatch, user, childWindows])
 
     useEffect(() => {
         if (isAppReady) {
             console.log(`App ready: ${isAppReady}`)
             console.log(user)
+
             dispatch(setUser(user))
             if (user)
                 dispatch(setUserProfile(user.profile))

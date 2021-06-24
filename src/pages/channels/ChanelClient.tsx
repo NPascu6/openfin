@@ -26,7 +26,6 @@ const ChannelClient: React.FC = () => {
     return (
         <div>
             <Ticker setLocalTicker={setLocalTicker}/>
-            <h2>Try it out</h2>
             <button onClick={async () => await client.dispatch("increment")}>
                 Increment
             </button>

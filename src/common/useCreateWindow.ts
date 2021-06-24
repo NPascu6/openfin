@@ -3,7 +3,7 @@ import {WindowOption} from "openfin/_v2/api/window/windowOption";
 import {useEffect, useState} from "react";
 import {v4 as uuidv4} from 'uuid';
 
-export default (initialOptions: WindowOption = {}) => {
+const useWindow = (initialOptions: WindowOption = {}) => {
     const [options, setOptions] = useState(initialOptions);
     const [win, setWin] = useState<_Window>();
 
@@ -33,3 +33,5 @@ export default (initialOptions: WindowOption = {}) => {
 
     return [win, setOptions];
 };
+
+export default useWindow

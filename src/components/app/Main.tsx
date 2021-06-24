@@ -6,6 +6,7 @@ import React from "react";
 import {RoutesSwitch} from "../../router/Routes";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
+import {useLocation} from "react-use";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,18 +22,20 @@ const useStyles = makeStyles((theme: Theme) =>
             flex: 1,
             overflow: "auto",
         },
+
     })
 );
 
 const Main = () => {
     const classes = useStyles();
+    const location = useLocation()
 
     return (
         <MuiPickersUtilsProvider utils={MomentUtils}>
             <div className={classes.root}>
                 <CssBaseline/>
-                <Topbar/>
-                <Sidebar/>
+                {(location.pathname === '/' || location.pathname === '/channel-provider')&& <Topbar/>}
+                {(location.pathname === '/' || location.pathname === '/channel-provider') &&<Sidebar/>}
                 <Grid container direction="column" className={classes.content}>
                     <Grid className={classes.appBarSpacer}/>
                     <Grid container className={classes.pageArea}>

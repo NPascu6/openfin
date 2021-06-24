@@ -9,11 +9,20 @@
         "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
         "url": "http://localhost:3000",
         "applicationIcon": "http://localhost:3000/favicon.ico",
+        "clearChildSubscriptionsOnReload": true,
         "autoShow": true,
         "minWidth": 400,
         "defaultWidth": 1200,
+        "defaultCentered": true,
+        "saveWindowState": true,
+        "backgroundColor": "#fffff",
         "minHeight": 400,
         "defaultHeight": 825,
+        "cornerRounding": {
+            "width": 5,
+            "height": 5
+        },
+
         "frame": true,
         "contextMenu": true
     },

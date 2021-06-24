@@ -220,7 +220,7 @@ const NavLinkSection = ({props}: { props: any }) => {
 
     const renderNavLinks = (profile: Profile, routes: RouteDefinition [] | undefined, isSubLink: boolean = false) => {
         if (routes)
-            return routes.filter(r => !r.name?.includes('Client')).map((route, index) => {
+            return routes.map((route, index) => {
                 if (!route.children) {
                     return (
                         <List key={`${index}-${route.path}`} component="div" disablePadding>

@@ -4,7 +4,7 @@ import ForbiddenPage from "../pages/errors/403";
 import NotFoundPage from "../pages/errors/404";
 import MainWindow from "../pages/mainWindow/MainWindow";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import ChannelClient from "../pages/channels/ChildWindow";
+import ChildWindow from "../pages/childWindow/ChildWindow";
 
 export interface RouteDefinition {
     path: string;
@@ -30,7 +30,7 @@ export const rootRouteDefinition: RouteDefinition =
             {
                 path: '/child-window',
                 name: "Chanel Window Client",
-                page: ChannelClient,
+                page: ChildWindow,
                 icon: DashboardIcon,
             }
         ]

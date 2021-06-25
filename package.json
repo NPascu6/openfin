@@ -24,6 +24,7 @@
     "@types/uuid": "^8.3.0",
     "axios": "^0.21.1",
     "classnames": "^2.3.1",
+    "http-proxy-middleware": "^2.0.0",
     "moment": "^2.29.1",
     "oidc-client": "^1.11.5",
     "openfin-layouts": "^1.2.0",
@@ -44,7 +45,7 @@
     "yarn": "^1.22.10"
   },
   "scripts": {
-    "launch": "openfin --launch --config ./public/app.dev.json --disable-web-security --user-data-dir=\"C:/ChromeDevSession\"",
+    "launch": "openfin --launch --config ./public/app.dev.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -1,108 +1,67 @@
 import {useChannelProvider} from "openfin-react-hooks";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/slices/rootSlice";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Prism from "prismjs";
 import {Identity} from "openfin/_v2/identity";
-import {v4 as uuidv4} from 'uuid';
-import {
-    addClientToList,
-    clearClients,
-    close,
-    decrement,
-    increment,
-    onConnection,
-    onDisconnection,
-    setWindow
-} from "../../redux/slices/chanel/chanelSlice";
+import {clearClients, onConnection, onDisconnection, setPushMessage,} from "../../redux/slices/chanel/chanelSlice";
 import {Typography} from "@material-ui/core";
+import {createInitialWindows, mainWindowActions} from "./mainWindowActions";
+import {closeChildWindows, closeWindowRemote, joinMainWindow} from "../../common/utils";
+import {setIsSignoutOpen, setUser, setUserProfile} from "../../redux/slices/app/appSlice";
+import AuthService from "../../services/auth/AuthService";
+import {ChannelProvider} from "openfin/_v2/api/interappbus/channel/provider";
+import {HubConnectionBuilder, JsonHubProtocol, LogLevel} from "@microsoft/signalr";
 
 const CHANNEL_NAME = "test";
 
-const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any: any) => any, setNumberOfChildWindows: (any: any) => any) => {
-    const getConfig = (top: number, left: number, width: number, height: number) => {
-        return {
-            autoShow: true,
-            defaultHeight: height,
-            defaultTop: top,
-            defaultLeft: left,
-            defaultWidth: width,
-            minWidth: 370,
-            frame: false,
-            name: uuidv4(),
-            url: "/child-window",
-        }
-    }
-
-    switch (numberOfChildWindows) {
-        case 0 : {
-            const newWindow = await window.fin.Window.create(getConfig(305, 10, 995, 400));
-            dispatch(setWindow(newWindow));
-            setNumberOfChildWindows(numberOfChildWindows + 1)
-            break;
-        }
-        case 1 : {
-            const newWindow = await window.fin.Window.create(getConfig(305, 1010, 400, 400));
-            dispatch(setWindow(newWindow));
-            setNumberOfChildWindows(numberOfChildWindows + 1)
-            break;
-        }
-        case 2 : {
-            const newWindow = await window.fin.Window.create(getConfig(710, 10, 1400, 200));
-            dispatch(setWindow(newWindow));
-            setNumberOfChildWindows(numberOfChildWindows + 1)
-            break;
-        }
-        default: {
-
-        }
-    }
-};
-
-const MainWindow = () => {
+const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
-    const {isAppReady} = useSelector((state: RootState) => state.app);
+    const {isAppReady, user} = useSelector((state: RootState) => state.app);
     const {childWindows, count, statuses} = useSelector((state: RootState) => state.channel);
     const [localCount, setLocalCount] = useState(0)
     const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
-
-    const channelActions = [
-        {
-            action: () => dispatch(increment()),
-            topic: "increment",
-        },
-        {
-            action: () => dispatch(decrement()),
-            topic: "decrement",
-        },
-        {
-            action: (payload: any) => dispatch(addClientToList(payload)),
-            topic: "addClientToList",
-        },
-        {
-            action: (payload: any) => dispatch(close(payload)),
-            topic: "close",
-        },
-    ];
-
-    const {provider} = useChannelProvider(CHANNEL_NAME, channelActions);
-
-    const closeWindowRemote = (name: string) => {
-        dispatch(close(name))
-    }
+    const [localProvider, setLocalProvider] = useState<ChannelProvider>()
+    const {provider} = useChannelProvider(CHANNEL_NAME, mainWindowActions(dispatch));
 
     const handleCloseAll = () => {
         const application = fin.desktop.Application.getCurrent();
-
-        application.getChildWindows(function (children) {
-            children.forEach(function (childWindow) {
-                console.log("Showing child: " + childWindow.name);
-                childWindow.close();
-            });
-        });
+        closeChildWindows(application)
         dispatch(clearClients())
         setNumberOfChildWindows(0)
     }
+
+
+    useEffect(() => {
+        if (user) {
+debugger
+
+            const connection = new HubConnectionBuilder()
+                .withUrl('https://api-test.covar.io/v1/marketdata/realtimeHub', { accessTokenFactory: () => `892efb5a-2984-3f13-34a2-72f3389e070d`})
+                .withAutomaticReconnect()
+                .withHubProtocol(new JsonHubProtocol())
+                .configureLogging(LogLevel.Information)
+                .build();
+
+            connection.start()
+                .then(result => {
+                    console.log('Connected!');
+
+                    connection.on('ReceiveMessage', message => {
+                        console.log(message)
+                    });
+                })
+                .catch(e => console.log('Connection failed: ', e));
+        }
+
+    }, [user]);
+
+
+    useEffect(() => {
+        if (isAppReady && numberOfChildWindows < 3 && user) {
+            createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)
+        }
+    }, [numberOfChildWindows, isAppReady, dispatch, user])
 
     useEffect(() => {
         if (provider) {
@@ -112,34 +71,19 @@ const MainWindow = () => {
             provider.onDisconnection((identity: Identity) => {
                 dispatch(onDisconnection(identity));
             });
+            setLocalProvider(provider)
         }
         Prism.highlightAll();
     }, [provider, dispatch]);
 
     useEffect(() => {
-        if (isAppReady && numberOfChildWindows < 3) {
-            createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)
-        }
-    }, [numberOfChildWindows, isAppReady, dispatch])
-
-    useEffect(() => {
         if (Object.keys(childWindows).length > 0) {
             const application = fin.desktop.Application.getCurrent();
             const mainWindow = fin.desktop.Window.getCurrent()
-
-            application.getChildWindows(function (children) {
-                children.forEach(function (childWindow) {
-                    childWindow.joinGroup(mainWindow);
-                });
-            });
+            joinMainWindow(application, mainWindow)
         } else if (Object.keys(childWindows).length > 4) {
             const application = fin.desktop.Application.getCurrent();
-
-            application.getChildWindows(function (children) {
-                children.forEach(function (childWindow) {
-                    childWindow.close();
-                });
-            });
+            closeChildWindows(application)
         }
     }, [childWindows])
 
@@ -149,17 +93,46 @@ const MainWindow = () => {
         }
     }, [count])
 
+    const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
+        e.preventDefault();
+
+        dispatch(setUser(null))
+        dispatch(setUserProfile(null))
+        dispatch(setIsSignoutOpen(false));
+        handleCloseAll()
+
+        if (value === true) {
+            await AuthService.startSignoutMainWindow();
+            return;
+        }
+    };
+
     return (
         <div>
+            {"Logged in as: " + user?.profile.name}
+            <button onClick={(e) => handleSignout(e, true)}>Sign out</button>
+            <input
+                placeholder="Type your message"
+                type="text"
+                onChange={(e) =>
+                    dispatch(setPushMessage(e.target.value))
+                }
+            />
+            <button
+                onClick={() => provider.publish("pushMessage", localProvider)}
+                disabled={Object.keys(childWindows).length === 0}
+            >
+                Push
+            </button>
             <div>
                 {statuses && statuses.map((c, key) => (
                     <div key={key}>
                         <Typography variant={"body2"}>{key + ' - ' + c.msg}</Typography>
-                        <button onClick={() => closeWindowRemote(c.name)}>close</button>
+                        <button onClick={() => closeWindowRemote(c.name, dispatch)}>close</button>
                     </div>
                 ))}
             </div>
-            <button onClick={() => handleCloseAll()}>Clear clients</button>
+            <button onClick={() => handleCloseAll()}>Reconnect clients</button>
             <button
                 onClick={() => createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)}>Connect
                 Client

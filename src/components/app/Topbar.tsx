@@ -58,7 +58,6 @@ const Topbar = () => {
     const theme = useTheme()
     const location = useLocation()
     const isDarkTheme = useSelector((state: RootState) => state.app.isDarkTheme);
-    const topbarTitle = useSelector((state: RootState) => state.app.topbarTitle);
     const [isDocked,] = useDocked();
 
     const [maximized, setMaximized] = useMaximized();
@@ -97,8 +96,8 @@ const Topbar = () => {
         <AppBar position="absolute" className={clsx(classes.appBar, "appBar")}>
             <Grid container alignItems={"center"} style={{height: '15vh'}}>
                 <div className={classes.title}>
-                    <Typography variant="h5" color="inherit" noWrap style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
-                        {topbarTitle?.title}
+                    <Typography variant="body1" color="inherit" noWrap style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
+                        {"React openfin app :: Covario"}
                     </Typography>
                 </div>
                 <IconButton aria-label="Light/Dark" color="inherit" onClick={handleThemeChange}>

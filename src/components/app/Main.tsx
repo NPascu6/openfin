@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const Main = () => {
+const Main: React.FC = () => {
     const classes = useStyles();
     const location = useLocation()
 
@@ -38,7 +38,7 @@ const Main = () => {
         <MuiPickersUtilsProvider utils={MomentUtils}>
             <div className={classes.root}>
                 <CssBaseline/>
-                {(location.pathname === '/' || location.pathname === '/channel-provider')&& <Topbar/>}
+                {(location.pathname === '/' || location.pathname === '/channel-provider') && <Topbar/>}
                 <Grid container direction="column" className={classes.content}>
                     <Grid className={classes.appBarSpacer}/>
                     <Grid container className={classes.pageArea}>

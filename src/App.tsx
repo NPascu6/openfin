@@ -29,9 +29,11 @@ const App = () => {
         if (isAppReady) {
             console.log(`App ready: ${isAppReady}`)
             console.log(user)
+
             dispatch(setUser(user))
-            if (user)
+            if (user){
                 dispatch(setUserProfile(user.profile))
+            }
         }
     }, [isAppReady, user, dispatch])
 

@@ -10,7 +10,7 @@ interface TickerProps {
     setLocalTicker: (number: number) => any
 }
 
-const Ticker = ({setLocalTicker} : TickerProps) => {
+const Ticker = ({setLocalTicker}: TickerProps) => {
     const [number, setNumber] = useState(0)
 
     const getNumber = () => {

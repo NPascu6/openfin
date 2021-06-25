@@ -22,25 +22,28 @@ const channelSlice = createSlice({
     initialState,
     reducers: {
         setWindow(state, action: PayloadAction<any>) {
-                return {
-                    ...state,
-                    childWindows: {
-                        [action.payload.identity.name]: action.payload,
-                        ...state.childWindows,
-                    },
-                };
+            return {
+                ...state,
+                childWindows: {
+                    [action.payload.identity.name]: action.payload,
+                    ...state.childWindows,
+                },
+            };
         },
         setChildWindow(state, action: PayloadAction<any>) {
-                return {
-                    ...state,
-                    childWindows: {
-                        [action.payload.identity.name]: action.payload,
-                        ...state.childWindows,
-                    },
-                };
+            return {
+                ...state,
+                childWindows: {
+                    [action.payload.identity.name]: action.payload,
+                    ...state.childWindows,
+                },
+            };
         },
         setChanelName(state, action: PayloadAction<string>) {
             state.name = action.payload
+        },
+        setPushMessage(state, action: PayloadAction<string>) {
+            state.pushMessage = action.payload
         },
         increment: function (state) {
             if (state.count !== undefined) {
@@ -56,12 +59,11 @@ const channelSlice = createSlice({
         close: function (state, action: PayloadAction<any>) {
             const {windowName} = action.payload;
 
-            if(windowName === undefined){
+            if (windowName === undefined) {
                 if (state.childWindows[action.payload]) {
                     state.childWindows[action.payload].close();
                 }
-            }
-            else{
+            } else {
                 if (state.childWindows[windowName]) {
                     state.childWindows[windowName].close();
                 }
@@ -112,7 +114,8 @@ export const {
     setChanelName,
     addClientToList,
     clearClients,
-    setChildWindow
+    setChildWindow,
+    setPushMessage
 } = channelSlice.actions;
 
 export default channelSlice.reducer;

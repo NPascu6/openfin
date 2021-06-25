@@ -15,6 +15,7 @@ import {
     onDisconnection,
     setWindow
 } from "../../redux/slices/chanel/chanelSlice";
+import {Typography} from "@material-ui/core";
 
 const CHANNEL_NAME = "test";
 
@@ -152,11 +153,11 @@ const MainWindow = () => {
         <div>
             <div>
                 {statuses && statuses.map((c, key) => (
-                    <div key={key}>{key + ' - ' + c.msg}
+                    <div key={key}>
+                        <Typography variant={"body2"}>{key + ' - ' + c.msg}</Typography>
                         <button onClick={() => closeWindowRemote(c.name)}>close</button>
                     </div>
                 ))}
-                <strong>Provider Status:</strong>
             </div>
             <button onClick={() => handleCloseAll()}>Clear clients</button>
             <button

@@ -19,7 +19,7 @@ import MinimizeIcon from '@material-ui/icons/Minimize';
 import CloseIcon from '@material-ui/icons/Close';
 import LinkIcon from '@material-ui/icons/Link';
 import {useLocation} from "react-use";
-import {useMaximized} from "openfin-react-hooks";
+import {useDocked, useMaximized} from "openfin-react-hooks";
 import {FullscreenSharp} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -59,6 +59,7 @@ const Topbar = () => {
     const location = useLocation()
     const isDarkTheme = useSelector((state: RootState) => state.app.isDarkTheme);
     const topbarTitle = useSelector((state: RootState) => state.app.topbarTitle);
+    const [isDocked,] = useDocked();
 
     const [maximized, setMaximized] = useMaximized();
 
@@ -78,7 +79,7 @@ const Topbar = () => {
 
     const onUndockClick = useCallback(async () => {
         const currentWindow = fin.desktop.Window.getCurrent()
-        currentWindow.leaveGroup()
+        currentWindow.leaveGroup();
     }, []);
 
 
@@ -105,13 +106,13 @@ const Topbar = () => {
                         <BrightnessHighIcon style={{color: theme.palette.text.secondary}}/>
                     </Tooltip>
                 </IconButton>
-                <IconButton
+                {isDocked && <IconButton
                     className="header-icon link-icon"
                     onClick={onUndockClick}
                     title="Undock"
                 >
                     <LinkIcon style={{color: theme.palette.text.secondary}}/>
-                </IconButton>
+                </IconButton>}
                 <IconButton className="header-icon" onClick={onMinimizeClick} title="Minimize">
                     <MinimizeIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>

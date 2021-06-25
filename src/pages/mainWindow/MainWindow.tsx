@@ -35,19 +35,19 @@ const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any
 
     switch (numberOfChildWindows) {
         case 0 : {
-            const newWindow = await window.fin.Window.create(getConfig(255, 10, 995, 400));
+            const newWindow = await window.fin.Window.create(getConfig(305, 10, 995, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 1 : {
-            const newWindow = await window.fin.Window.create(getConfig(255, 1015, 400, 400));
+            const newWindow = await window.fin.Window.create(getConfig(305, 1010, 400, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 2 : {
-            const newWindow = await window.fin.Window.create(getConfig(660, 10, 1400, 200));
+            const newWindow = await window.fin.Window.create(getConfig(710, 10, 1400, 200));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;

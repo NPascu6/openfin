@@ -18,7 +18,6 @@ import {RootState} from "../../redux/slices/rootSlice";
 import MinimizeIcon from '@material-ui/icons/Minimize';
 import CloseIcon from '@material-ui/icons/Close';
 import LinkIcon from '@material-ui/icons/Link';
-import {snapAndDock} from "openfin-layouts";
 import {useLocation} from "react-use";
 import {useMaximized} from "openfin-react-hooks";
 import {FullscreenSharp} from "@material-ui/icons";
@@ -78,8 +77,20 @@ const Topbar = () => {
     }, []);
 
     const onUndockClick = useCallback(async () => {
-        await snapAndDock.undockWindow();
+        const currentWindow = fin.desktop.Window.getCurrent()
+        currentWindow.leaveGroup()
     }, []);
+
+
+    const onMaximizeClick = () => {
+        const currentWindow = fin.desktop.Window.getCurrent()
+        if(maximized){
+            setMaximized(false)
+        }
+        else{
+            currentWindow.maximize()
+        }
+    }
 
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, "appBar")}>
@@ -104,7 +115,7 @@ const Topbar = () => {
                 <IconButton className="header-icon" onClick={onMinimizeClick} title="Minimize">
                     <MinimizeIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>
-                <IconButton className="header-icon" onClick={() => setMaximized(!maximized)} title="Minimize">
+                <IconButton className="header-icon" onClick={() => onMaximizeClick()} title="Maximize">
                     <FullscreenSharp style={{color: theme.palette.text.secondary}}/>
                 </IconButton>
                 <IconButton className="header-icon" onClick={onCloseClick} title="Close">

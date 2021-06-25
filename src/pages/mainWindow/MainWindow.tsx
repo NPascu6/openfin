@@ -26,6 +26,7 @@ const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any
             defaultTop: top,
             defaultLeft: left,
             defaultWidth: width,
+            minWidth: 370,
             frame: false,
             name: uuidv4(),
             url: "/child-window",
@@ -34,13 +35,13 @@ const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any
 
     switch (numberOfChildWindows) {
         case 0 : {
-            const newWindow = await window.fin.Window.create(getConfig(255, 10, 1095, 400));
+            const newWindow = await window.fin.Window.create(getConfig(255, 10, 995, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 1 : {
-            const newWindow = await window.fin.Window.create(getConfig(255, 1110, 300, 400));
+            const newWindow = await window.fin.Window.create(getConfig(255, 1015, 400, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;

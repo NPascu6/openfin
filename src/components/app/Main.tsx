@@ -12,8 +12,13 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: "flex",
             height: "100vh",
+            border: '1px solid black'
         },
-        appBarSpacer: theme.mixins.toolbar,
+        appBarSpacer: {
+            height: '2em',
+            minHeight: '2em',
+            border: '1px solid black'
+        },
         content: {
             flex: 1,
         },

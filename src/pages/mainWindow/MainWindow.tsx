@@ -5,24 +5,58 @@ import React, {useEffect, useState} from "react";
 import Prism from "prismjs";
 import {Identity} from "openfin/_v2/identity";
 import {clearClients, onConnection, onDisconnection, setPushMessage,} from "../../redux/slices/chanel/chanelSlice";
-import {Typography} from "@material-ui/core";
+import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import {createInitialWindows, mainWindowActions} from "./mainWindowActions";
 import {closeChildWindows, closeWindowRemote, joinMainWindow} from "../../common/utils";
-import {setIsSignoutOpen, setUser, setUserProfile} from "../../redux/slices/app/appSlice";
-import AuthService from "../../services/auth/AuthService";
 import {ChannelProvider} from "openfin/_v2/api/interappbus/channel/provider";
-import {HubConnectionBuilder, JsonHubProtocol, LogLevel} from "@microsoft/signalr";
+import MarketDataService from "../../services/marketdata/MarketDataService";
+import SummaryTable from "../dashboard/SummaryTable";
+import ChildWindowList from "../childWindow/ChildWindowList";
 
 const CHANNEL_NAME = "test";
 
+
+// const ProfilePage = () => {
+//     const dispatch = useDispatch();
+//     const [numberOfChildWindows, setNumberOfChildWindows] = useState<number>(0)
+//
+//     const handleCloseAll = () => {
+//         const application = fin.desktop.Application.getCurrent();
+//         closeChildWindows(application)
+//         dispatch(clearClients())
+//         setNumberOfChildWindows(0)
+//     }
+//     const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
+//         e.preventDefault();
+//
+//         dispatch(setUser(null))
+//         dispatch(setUserProfile(null))
+//         dispatch(setIsSignoutOpen(false));
+//         handleCloseAll()
+//
+//         if (value === true) {
+//             await AuthService.startSignoutMainWindow();
+//             return;
+//         }
+//     };
+//
+//     return  <Grid container>
+//         <Button
+//             style={{height: '2.5em', fontSize: 12}}
+//             size={"small"}
+//             variant={'outlined'} onClick={(e) => handleSignout(e, true)}>Sign out</Button>
+//     </Grid>
+// }
+
 const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
-    const {isAppReady, user} = useSelector((state: RootState) => state.app);
+    const {activeFundSummary} = useSelector((state: RootState) => state.bookkeeper);
     const {childWindows, count, statuses} = useSelector((state: RootState) => state.channel);
-    const [localCount, setLocalCount] = useState(0)
+    const [localCount, setLocalCount] = useState<number>(0)
     const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
     const [localProvider, setLocalProvider] = useState<ChannelProvider>()
     const {provider} = useChannelProvider(CHANNEL_NAME, mainWindowActions(dispatch));
+    const [isChildWindowListOpen, setIsChildWindowListOpen] = useState<boolean>(false)
 
     const handleCloseAll = () => {
         const application = fin.desktop.Application.getCurrent();
@@ -32,36 +66,17 @@ const MainWindow: React.FC = () => {
     }
 
 
-    useEffect(() => {
-        if (user) {
-debugger
-
-            const connection = new HubConnectionBuilder()
-                .withUrl('https://api-test.covar.io/v1/marketdata/realtimeHub', { accessTokenFactory: () => `892efb5a-2984-3f13-34a2-72f3389e070d`})
-                .withAutomaticReconnect()
-                .withHubProtocol(new JsonHubProtocol())
-                .configureLogging(LogLevel.Information)
-                .build();
-
-            connection.start()
-                .then(result => {
-                    console.log('Connected!');
-
-                    connection.on('ReceiveMessage', message => {
-                        console.log(message)
-                    });
-                })
-                .catch(e => console.log('Connection failed: ', e));
+    const createChildWindows = () => {
+        if (numberOfChildWindows < 4)
+            for (let i = 0; i < 4; i++) {
+                createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)
+            }
+        else {
+            const application = fin.desktop.Application.getCurrent();
+            closeChildWindows(application)
+            createChildWindows()
         }
-
-    }, [user]);
-
-
-    useEffect(() => {
-        if (isAppReady && numberOfChildWindows < 3 && user) {
-            createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)
-        }
-    }, [numberOfChildWindows, isAppReady, dispatch, user])
+    }
 
     useEffect(() => {
         if (provider) {
@@ -93,52 +108,85 @@ debugger
         }
     }, [count])
 
-    const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
-        e.preventDefault();
+    useEffect(() => {
+        if (!activeFundSummary) return;
 
-        dispatch(setUser(null))
-        dispatch(setUserProfile(null))
-        dispatch(setIsSignoutOpen(false));
-        handleCloseAll()
+        if (MarketDataService.isConnected) {
+            const subscribeData = async () => {
+                debugger
+                if (activeFundSummary.assets) {
+                    await MarketDataService.subscribeTicker(
+                        activeFundSummary.assets
+                            .filter((a) => a.asset !== activeFundSummary.currency)
+                            ?.map((r) => `${r.asset}-${activeFundSummary.currency}`)
+                    );
+                }
+            };
 
-        if (value === true) {
-            await AuthService.startSignoutMainWindow();
-            return;
+            subscribeData().then();
         }
-    };
+
+    }, [activeFundSummary]);
+
 
     return (
-        <div>
-            {"Logged in as: " + user?.profile.name}
-            <button onClick={(e) => handleSignout(e, true)}>Sign out</button>
-            <input
-                placeholder="Type your message"
-                type="text"
-                onChange={(e) =>
-                    dispatch(setPushMessage(e.target.value))
-                }
-            />
-            <button
-                onClick={() => provider.publish("pushMessage", localProvider)}
-                disabled={Object.keys(childWindows).length === 0}
-            >
-                Push
-            </button>
-            <div>
-                {statuses && statuses.map((c, key) => (
-                    <div key={key}>
-                        <Typography variant={"body2"}>{key + ' - ' + c.msg}</Typography>
-                        <button onClick={() => closeWindowRemote(c.name, dispatch)}>close</button>
-                    </div>
-                ))}
-            </div>
-            <button onClick={() => handleCloseAll()}>Reconnect clients</button>
-            <button
-                onClick={() => createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)}>Connect
-                Client
-            </button>
-            <div><strong>Count:</strong> {localCount}</div>
-        </div>
+        <Grid container>
+            <Grid item>
+                <TextField
+                    variant={"outlined"}
+                    size={"small"}
+                    placeholder="Type your message"
+                    type="text"
+                    onChange={(e) =>
+                        dispatch(setPushMessage(e.target.value))
+                    }
+                />
+            </Grid>
+            <Grid item>
+                <Button
+                    variant={"outlined"}
+                    size={"small"}
+                    onClick={() => provider.publish("pushMessage", localProvider)}
+                    disabled={Object.keys(childWindows).length === 0}
+                >
+                    Push
+                </Button>
+            </Grid>
+            <Grid container>
+                <SummaryTable/>
+            </Grid>
+            <Grid container>
+                <Grid item>
+                    {statuses && statuses.map((c, key) => (
+                        <div key={key}>
+                            <Typography variant={"body2"}>{key + ' - ' + c.msg}</Typography>
+                            <Button
+                                variant={"outlined"}
+                                size={"small"} onClick={() => closeWindowRemote(c.name, dispatch)}>close</Button>
+                        </div>
+                    ))}
+                </Grid>
+                <Grid item>
+                    <Button
+                        variant={"outlined"}
+                        size={"small"} onClick={() => createChildWindows()}>Create Child Windows</Button>
+                    <Button
+                        variant={"outlined"}
+                        size={"small"} onClick={() => setIsChildWindowListOpen(!isChildWindowListOpen)}>Open Child
+                        Window list</Button>
+                </Grid>
+                <Grid item>
+                    <Button
+                        variant={"outlined"}
+                        size={"small"} onClick={() => handleCloseAll()}>Close All Child</Button>
+                </Grid>
+            </Grid>
+            <Grid container>
+                <strong>Count:</strong> {localCount}
+            </Grid>
+            <ChildWindowList isOpen={isChildWindowListOpen}
+                             setOpen={setIsChildWindowListOpen}/>
+        </Grid>
     );
 }
 

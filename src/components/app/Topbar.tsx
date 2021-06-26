@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import BrightnessHighIcon from "@material-ui/icons/BrightnessHigh";
 import clsx from "clsx";
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsDarkTheme} from "../../redux/slices/app/appSlice";
 import {RootState} from "../../redux/slices/rootSlice";
@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
             height: '2em',
             minHeight: '2em',
             border: '1px solid black'
-        }
+        },
+
     })
 );
 
@@ -57,8 +58,9 @@ const Topbar = () => {
     const dispatch = useDispatch();
     const theme = useTheme()
     const location = useLocation()
-    const isDarkTheme = useSelector((state: RootState) => state.app.isDarkTheme);
-    const [isDocked,] = useDocked();
+    const {isDarkTheme, profile} = useSelector((state: RootState) => state.app);
+    const [isDocked] = useDocked();
+
 
     const [maximized, setMaximized] = useMaximized();
 
@@ -84,22 +86,38 @@ const Topbar = () => {
 
     const onMaximizeClick = () => {
         const currentWindow = fin.desktop.Window.getCurrent()
-        if(maximized){
+        if (maximized) {
             setMaximized(false)
-        }
-        else{
+        } else {
             currentWindow.maximize()
         }
     }
+
+    useEffect(() => {
+        const getGroup = async () => {
+            const windowGroup = await fin.Window.getCurrentSync().getGroup()
+
+            if (windowGroup) {
+                console.log(windowGroup)
+            }
+        }
+
+        getGroup()
+
+    }, [])
 
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, "appBar")}>
             <Grid container alignItems={"center"} style={{height: '15vh'}}>
                 <div className={classes.title}>
-                    <Typography variant="body1" color="inherit" noWrap style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
+                    <Typography variant="body1" color="inherit" noWrap
+                                style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
                         {"React openfin app :: Covario"}
                     </Typography>
                 </div>
+                <Grid item style={{color: theme.palette.text.primary}}>
+                    {"Logged in as: " + profile?.name}
+                </Grid>
                 <IconButton aria-label="Light/Dark" color="inherit" onClick={handleThemeChange}>
                     <Tooltip title="Toggle light/dark theme" aria-label="Light/Dark">
                         <BrightnessHighIcon style={{color: theme.palette.text.secondary}}/>

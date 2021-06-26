@@ -5,6 +5,9 @@ import App from './App';
 import {Provider} from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
 import {persistor, store} from "../src/redux/store";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 const render = () => {
     ReactDOM.render(

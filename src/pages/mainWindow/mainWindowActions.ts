@@ -13,19 +13,19 @@ import {getWindowConfig} from "../../common/utils";
 export const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any: any) => any, setNumberOfChildWindows: (any: any) => any) => {
     switch (numberOfChildWindows) {
         case 0 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig(300, 10, 1000, 400));
+            const newWindow = await window.fin.Window.create(getWindowConfig(450, 10, 1000, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 1 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig(300, 1000, 410, 400));
+            const newWindow = await window.fin.Window.create(getWindowConfig(450, 1000, 410, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 2 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig(700, 10, 1400, 200));
+            const newWindow = await window.fin.Window.create(getWindowConfig(900, 10, 1400, 200));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;

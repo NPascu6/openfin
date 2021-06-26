@@ -15,7 +15,7 @@
         "autoShow": true,
         "defaultWidth": 1400,
         "minWidth": 480,
-        "defaultHeight": 250,
+        "defaultHeight": 450,
         "minHeight": 150,
         "defaultTop": 50,
         "resizable": true,

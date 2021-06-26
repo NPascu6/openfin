@@ -7,7 +7,7 @@ import {Identity} from "openfin/_v2/identity";
 import {clearClients, onConnection, onDisconnection, setPushMessage,} from "../../redux/slices/chanel/chanelSlice";
 import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import {createInitialWindows, mainWindowActions} from "./mainWindowActions";
-import {closeChildWindows, closeWindowRemote, joinMainWindow} from "../../common/utils";
+import {closeChildWindows, closeWindowRemote} from "../../common/utils";
 import {ChannelProvider} from "openfin/_v2/api/interappbus/channel/provider";
 import MarketDataService from "../../services/marketdata/MarketDataService";
 import SummaryTable from "../dashboard/SummaryTable";
@@ -65,11 +65,20 @@ const MainWindow: React.FC = () => {
         setNumberOfChildWindows(0)
     }
 
+    const createChildWindows = async () => {
+        let nrOfChildWindows = numberOfChildWindows
+        const app = await fin.Application.getCurrent();
 
-    const createChildWindows = () => {
-        if (numberOfChildWindows < 4)
-            for (let i = 0; i < 4; i++) {
-                createInitialWindows(numberOfChildWindows, dispatch, setNumberOfChildWindows)
+        let mainWindow =await fin.Window.getCurrent()
+        if (numberOfChildWindows < 3)
+            for (let i = 0; i < 3; i++) {
+                createInitialWindows(nrOfChildWindows, dispatch, setNumberOfChildWindows).then(async () => {
+                    let child = await app.getChildWindows()
+                    if (child)
+                        child[i].joinGroup(mainWindow)
+                })
+                nrOfChildWindows++
+                setNumberOfChildWindows(nrOfChildWindows)
             }
         else {
             const application = fin.desktop.Application.getCurrent();
@@ -92,17 +101,6 @@ const MainWindow: React.FC = () => {
     }, [provider, dispatch]);
 
     useEffect(() => {
-        if (Object.keys(childWindows).length > 0) {
-            const application = fin.desktop.Application.getCurrent();
-            const mainWindow = fin.desktop.Window.getCurrent()
-            joinMainWindow(application, mainWindow)
-        } else if (Object.keys(childWindows).length > 4) {
-            const application = fin.desktop.Application.getCurrent();
-            closeChildWindows(application)
-        }
-    }, [childWindows])
-
-    useEffect(() => {
         if (count) {
             setLocalCount(count)
         }
@@ -113,7 +111,6 @@ const MainWindow: React.FC = () => {
 
         if (MarketDataService.isConnected) {
             const subscribeData = async () => {
-                debugger
                 if (activeFundSummary.assets) {
                     await MarketDataService.subscribeTicker(
                         activeFundSummary.assets

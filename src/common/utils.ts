@@ -9,7 +9,7 @@ export const getWindowConfig = (top: number, left: number, width: number, height
         defaultTop: top,
         defaultLeft: left,
         defaultWidth: width,
-        minWidth: 370,
+        minWidth: 450,
         frame: false,
         name: uuidv4(),
         url: "/child-window",

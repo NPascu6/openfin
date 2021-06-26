@@ -19,7 +19,7 @@ export const createInitialWindows = async (numberOfChildWindows: number, dispatc
             break;
         }
         case 1 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig(450, 1000, 410, 400));
+            const newWindow = await window.fin.Window.create(getWindowConfig(450, 1004, 1000, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;

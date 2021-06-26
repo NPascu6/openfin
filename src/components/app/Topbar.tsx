@@ -21,6 +21,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import {useLocation} from "react-use";
 import {useDocked, useMaximized} from "openfin-react-hooks";
 import {FullscreenSharp} from "@material-ui/icons";
+import {joinMainWindow} from "../../common/utils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -59,10 +60,8 @@ const Topbar = () => {
     const theme = useTheme()
     const location = useLocation()
     const {isDarkTheme, profile} = useSelector((state: RootState) => state.app);
-    const [isDocked] = useDocked();
-
-
     const [maximized, setMaximized] = useMaximized();
+    const [isDocked, undock] = useDocked();
 
     const handleThemeChange = () => {
         dispatch(setIsDarkTheme(!isDarkTheme));
@@ -78,12 +77,6 @@ const Topbar = () => {
         currentWindow.close();
     }, []);
 
-    const onUndockClick = useCallback(async () => {
-        const currentWindow = fin.desktop.Window.getCurrent()
-        currentWindow.leaveGroup();
-    }, []);
-
-
     const onMaximizeClick = () => {
         const currentWindow = fin.desktop.Window.getCurrent()
         if (maximized) {
@@ -92,19 +85,6 @@ const Topbar = () => {
             currentWindow.maximize()
         }
     }
-
-    useEffect(() => {
-        const getGroup = async () => {
-            const windowGroup = await fin.Window.getCurrentSync().getGroup()
-
-            if (windowGroup) {
-                console.log(windowGroup)
-            }
-        }
-
-        getGroup()
-
-    }, [])
 
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, "appBar")}>
@@ -115,9 +95,10 @@ const Topbar = () => {
                         {"React openfin app :: Covario"}
                     </Typography>
                 </div>
-                <Grid item style={{color: theme.palette.text.primary}}>
+                {location.pathname === '/' && <Grid item
+                      style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
                     {"Logged in as: " + profile?.name}
-                </Grid>
+                </Grid>}
                 <IconButton aria-label="Light/Dark" color="inherit" onClick={handleThemeChange}>
                     <Tooltip title="Toggle light/dark theme" aria-label="Light/Dark">
                         <BrightnessHighIcon style={{color: theme.palette.text.secondary}}/>
@@ -125,7 +106,7 @@ const Topbar = () => {
                 </IconButton>
                 {isDocked && <IconButton
                     className="header-icon link-icon"
-                    onClick={onUndockClick}
+                    onClick={undock}
                     title="Undock"
                 >
                     <LinkIcon style={{color: theme.palette.text.secondary}}/>

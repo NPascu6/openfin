@@ -2,12 +2,11 @@ import {WindowOption} from "openfin/_v2/api/window/windowOption";
 import {IUseChildWindowOptions} from "openfin-react-hooks";
 import {CHILD_BODY_AS_HOOK_OPTION} from "./ChildWindowBodyExample";
 
-const HTML_URL: string | undefined = process.env.REACT_APP_SAMPLE_WINDOW_HTML;
 const WINDOW_HEIGHT: number = 200;
 
 export const initialLaunchConfig = () => {
     return {
-        htmlUrl: HTML_URL,
+        htmlUrl: '/child-window',
         shouldClosePreviousOnLaunch: true,
         shouldInheritCss: true,
         shouldInheritScripts: true,

@@ -20,7 +20,9 @@ export interface BookkeeperState {
     fundsTransferEntries?: FundsTransferEntry[];
 }
 
-const initialState: BookkeeperState = {};
+export const initialState: BookkeeperState = {
+    activeSummaryRows: []
+};
 
 const bookkeeperSlice = createSlice({
     name: "bookkeeper",

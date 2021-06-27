@@ -36,7 +36,6 @@ export class MarketDataService extends HubService {
     }
 
     public get tickerUpdate(): Observable<MarketDataUpdateMessage<TickerMessage>[]> {
-        debugger
         const refreshTime = 5000;
         return this._onTickerUpdate
             .pipe(
@@ -58,7 +57,7 @@ export class MarketDataService extends HubService {
         return MarketDataService.instance;
     }
 
-    public async start(setMessage: any): Promise<HubConnectionState> {
+    public async start(mutateMessage: any): Promise<HubConnectionState> {
         await this.stop();
 
         this.hubConnection.onreconnected(async (connectionId?: string) => {
@@ -68,7 +67,7 @@ export class MarketDataService extends HubService {
             await this.subscribeTicker([]);
         });
 
-        this.hubConnection.on(this._methodNames.RECEIVE_MESSAGE, (message) => setMessage(message ?? []));
+        this.hubConnection.on(this._methodNames.RECEIVE_MESSAGE, (message) => mutateMessage(message ?? []));
 
         if (this.isDisconnected)
             await this.hubConnection.start();
@@ -81,7 +80,7 @@ export class MarketDataService extends HubService {
     }
 
     public async subscribeTicker(instrumentCodes: string[] | undefined): Promise<void> {
-        if(instrumentCodes){
+        if (instrumentCodes) {
             instrumentCodes.forEach(async code => {
                 const subscriptionRequest: SubscriptionRequest = {
                     event: EventType.Ticker,
@@ -120,7 +119,6 @@ export class MarketDataService extends HubService {
     }
 
     private processTicker(item: MarketDataMessage): void {
-        debugger
         const data: TickerMessage = item.data;
         if (data.volume !== 0) {
             this._onTickerUpdate.next({

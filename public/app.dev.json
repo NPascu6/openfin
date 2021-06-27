@@ -1,44 +1,44 @@
 {
-    "devtools_port": 9090,
-    "runtime": {
-        "arguments": "--enable-aggressive-domstorage-flushing",
-        "version": "11.69.42.14"
-    },
-    "startup_app": {
-        "name": "openfin-demo-app",
-        "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
-        "url": "http://localhost:3000",
-        "applicationIcon": "http://localhost:3000/favicon.ico",
-        "clearChildSubscriptionsOnReload": true,
-        "backgroundColor": "#CB3514",
-        "contextMenu": true,
-        "autoShow": true,
-        "defaultWidth": 1400,
-        "minWidth": 480,
-        "defaultHeight": 400,
-        "minHeight": 150,
-        "defaultTop": 50,
-        "resizable": true,
-        "frame": false,
-        "saveWindowState": false,
-        "loadErrorMessage": "There was an error loading the application."
-    },
-    "services": [
-        {
-            "name": "layouts",
-            "config": {
-                "features": {
-                    "tab": false,
-                    "dock": true,
-                    "snap": true
-                }
-            }
+  "devtools_port": 9090,
+  "runtime": {
+    "arguments": "--enable-aggressive-domstorage-flushing",
+    "version": "11.69.42.14"
+  },
+  "startup_app": {
+    "name": "openfin-demo-app",
+    "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
+    "url": "http://localhost:3000",
+    "applicationIcon": "http://localhost:3000/favicon.ico",
+    "clearChildSubscriptionsOnReload": true,
+    "backgroundColor": "#CB3514",
+    "contextMenu": true,
+    "autoShow": true,
+    "defaultWidth": 1400,
+    "minWidth": 480,
+    "defaultHeight": 400,
+    "minHeight": 150,
+    "defaultTop": 50,
+    "resizable": true,
+    "frame": false,
+    "saveWindowState": false,
+    "loadErrorMessage": "There was an error loading the application."
+  },
+  "services": [
+    {
+      "name": "layouts",
+      "config": {
+        "features": {
+          "tab": false,
+          "dock": true,
+          "snap": true
         }
-    ],
-    "shortcut": {
-        "company": "",
-        "description": "openfin demo app",
-        "name": "Openfin demo app",
-        "icon": "http://localhost:3000/favicon.ico"
+      }
     }
+  ],
+  "shortcut": {
+    "company": "",
+    "description": "openfin demo app",
+    "name": "Openfin demo app",
+    "icon": "http://localhost:3000/favicon.ico"
+  }
 }

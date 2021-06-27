@@ -71,8 +71,8 @@ const AllocationPieChart = () => {
     return (
         data
             // @ts-ignore
-        ? <Plot useResizeHandler={true} data={data} layout={layout??null} config={config} style={style}/>
-        : <div style={{width: "100%", height: "100%"}}><LinearProgress/></div>
+            ? <Plot useResizeHandler={true} data={data} layout={layout ?? null} config={config} style={style}/>
+            : <div style={{width: "100%", height: "100%"}}><LinearProgress/></div>
     );
 };
 

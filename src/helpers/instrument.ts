@@ -16,25 +16,25 @@ export const getCurrencyByAssetCode = (assetCode: string, currencies: Currency[]
     };
 };
 
-export const getQuoteCurrenciesOf = (baseCurrency: string, instruments: SpotInstrument[]) : string[] => {
+export const getQuoteCurrenciesOf = (baseCurrency: string, instruments: SpotInstrument[]): string[] => {
     return getCurrenciesOf(baseCurrency, instruments, false);
 };
 
-export const getBaseCurrenciesOf = (quoteCurrency: string, instruments: SpotInstrument[]) : string[] => {
+export const getBaseCurrenciesOf = (quoteCurrency: string, instruments: SpotInstrument[]): string[] => {
     return getCurrenciesOf(quoteCurrency, instruments, true);
 };
 
-export const getBaseCurrencies = (instruments: SpotInstrument[]) : string[] => {
+export const getBaseCurrencies = (instruments: SpotInstrument[]): string[] => {
     return Array.from(new Set(instruments?.map(i => i.baseCurrencyCode).sort()));
 };
 
-const getCurrenciesOf = (currency: string, instruments: SpotInstrument[], isBase: boolean) : string[] => {
-    if((!currency || currency.trim() === "") && !instruments) {
+const getCurrenciesOf = (currency: string, instruments: SpotInstrument[], isBase: boolean): string[] => {
+    if ((!currency || currency.trim() === "") && !instruments) {
         return [];
     }
 
-    if(!currency || currency.trim() === "") {
-        return isBase ? Array.from(new Set(instruments.map(i => i.baseCurrencyCode).sort())) :  Array.from(new Set(instruments.map(i => i.quoteCurrencyCode).sort()));
+    if (!currency || currency.trim() === "") {
+        return isBase ? Array.from(new Set(instruments.map(i => i.baseCurrencyCode).sort())) : Array.from(new Set(instruments.map(i => i.quoteCurrencyCode).sort()));
     }
 
     return isBase

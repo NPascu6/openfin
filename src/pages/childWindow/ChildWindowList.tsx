@@ -19,9 +19,9 @@ interface ChildWindowListProps {
     setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const ChildWindowList = ({isOpen, setOpen} : ChildWindowListProps) => {
+const ChildWindowList = ({isOpen, setOpen}: ChildWindowListProps) => {
     const {activeFund} = useSelector((state: RootState) => state.bookkeeper);
-const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const [localChildWindows, setChildWindows] = useState([])
 
     useEffect(() => {
@@ -42,7 +42,6 @@ const dispatch = useDispatch()
 
         }
     }, [dispatch, activeFund]);
-
 
 
     return <Paper style={{flex: 1}}>
@@ -70,7 +69,7 @@ const dispatch = useDispatch()
                 </Button>
             </DialogActions>
         </Dialog>
-        </Paper>
+    </Paper>
 }
 
 export default ChildWindowList

@@ -6,17 +6,14 @@ import BarChartIcon from "@material-ui/icons/BarChart";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import clsx from "clsx";
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useDebounce} from "react-use";
-import {FundSummaryRow} from "../../services/bookKeeper/models";
-import {setActiveSummaryRows} from "../../redux/slices/bookKeeper/bookkeeper";
+import React, {useEffect, useRef, useState} from "react";
+import {useSelector} from "react-redux";
+import {Fund, FundSummaryRow} from "../../services/bookKeeper/models";
 import {RootState} from "../../redux/slices/rootSlice";
-import {MarketDataUpdateMessage, TickerMessage} from "../../services/marketdata/models";
 
 
 interface InfoBoxesProps {
-    tickerMessages: MarketDataUpdateMessage<TickerMessage>[];
+    tickerMessages: any;
 }
 
 export interface InfoBoxProps {
@@ -121,95 +118,63 @@ const InfoBox = (props: InfoBoxProps) => {
     )
 }
 
-
-
-const InfoBoxes = ({ tickerMessages } : InfoBoxesProps) => {
-    const dispatch = useDispatch();
+const InfoBoxes = ({tickerMessages}: InfoBoxesProps) => {
     const {activeFund, activeSummaryRows} = useSelector((state: RootState) => state.bookkeeper);
     const dataRows = useRef<FundSummaryRow[] | undefined>(activeSummaryRows);
     const [infoBoxProps, setInfoBoxProps] = useState<InfoBoxProps[]>(defaultInfoBoxProps);
+    const [localFund, setLocalFund] = useState<Fund>();
 
-    const processInfoBoxProps = useCallback((rows: FundSummaryRow[]) => {
-        if (!rows) return;
-
-        // @ts-ignore
-        const totalMarketValue = rows.reduce((prev, curr) => prev + curr.value, 0);
-        // @ts-ignore
-        const totalPnl = rows.reduce((prev, curr) => prev + curr.unrealizedPnl + curr.realizedPnl, 0);
-        // @ts-ignore
-        const realizedPnl = rows.reduce((prev, curr) => prev + curr.realizedPnl, 0);
-        // @ts-ignore
-        const unrealizedPnl = rows.reduce((prev, curr) => prev + curr.unrealizedPnl, 0);
-
-        setInfoBoxProps(props => {
-            props.forEach(box => {
-                if (box.key === "value")
-                    box.value = totalMarketValue;
-
-                if (box.key === "totalPnl")
-                    box.value = totalPnl;
-
-                if (box.key === "realizedPnl")
-                    box.value = realizedPnl;
-
-                if (box.key === "unrealizedPnl")
-                    box.value = unrealizedPnl;
-            });
-            return props;
-        });
-    }, []);
 
     useEffect(() => {
+        if (activeFund) {
+            setLocalFund(activeFund)
+        }
+    }, [activeFund])
+
+    useEffect(() => {
+        const processInfoBoxProps = (rows: any) => {
+            if (!rows) return;
+
+            // @ts-ignore
+            const totalMarketValue = rows.reduce((prev, curr) => prev + curr.value, 0);
+            // @ts-ignore
+            const totalPnl = rows.reduce((prev, curr) => prev + curr.unrealizedPnl + curr.realizedPnl, 0);
+            // @ts-ignore
+            const realizedPnl = rows.reduce((prev, curr) => prev + curr.realizedPnl, 0);
+            // @ts-ignore
+            const unrealizedPnl = rows.reduce((prev, curr) => prev + curr.unrealizedPnl, 0);
+
+            setInfoBoxProps(props => {
+                props.forEach(box => {
+                    if (box.key === "value")
+                        box.value = totalMarketValue;
+
+                    if (box.key === "totalPnl")
+                        box.value = totalPnl;
+
+                    if (box.key === "realizedPnl")
+                        box.value = realizedPnl;
+
+                    if (box.key === "unrealizedPnl")
+                        box.value = unrealizedPnl;
+                });
+                return props;
+            });
+        };
+
+
         if (!dataRows.current && activeSummaryRows) {
             processInfoBoxProps(activeSummaryRows);
         }
 
         dataRows.current = activeSummaryRows;
-    }, [activeSummaryRows, processInfoBoxProps]);
+    }, [activeSummaryRows]);
 
-    useDebounce(() => {
-        if (!tickerMessages) return;
-
-        const getRows = () => {
-            const rows: FundSummaryRow[] = [];
-
-            dataRows.current?.forEach((r) => {
-                const row = {...r};
-                tickerMessages.forEach(tickerMessage => {
-                    if (row.instrumentCode === tickerMessage.current.instrumentCode) {
-                        const last = +tickerMessage.current.last;
-                        const prev = +tickerMessage.previous?.last ?? last;
-                        const change = ((last - prev) / prev) * 100;
-                        row.price = last;
-                        row.value = row.quantity ? row.quantity * row.price : 0;
-                        row.pctChange = change;
-                        row.pct24HChange = row.open24H === 0 ? 0 : ((last - (row.open24H ? row.open24H : 0)) / (row.open24H ? row.open24H : 1)) * 100;
-                        row.unrealizedPnl = row.averageCost === 0 ? 0 : (last - (row.averageCost ? row.averageCost : 0)) * (row.quantity ? row.quantity : 1);
-                    }
-                });
-
-                rows.push(row);
-            });
-
-            const sum = rows?.reduce((previousValue, currentValue) => previousValue + (currentValue.value ? currentValue.value : 0), 0);
-
-            rows?.forEach((row) => (row.pctPortfolio = (row.value ? row.value : 1 / sum) * 100));
-
-            return rows;
-        };
-
-        const rows = getRows();
-
-        dispatch(setActiveSummaryRows(rows));
-
-        processInfoBoxProps(rows);
-
-    }, 1000, [tickerMessages])
 
     useEffect(() => {
-        if (activeFund) {
+        if (localFund) {
             const numberFormatter =
-                new Intl.NumberFormat("en", {style: "currency", currency: activeFund.currency});
+                new Intl.NumberFormat("en", {style: "currency", currency: localFund.currency});
             const props = [...defaultInfoBoxProps];
             props.forEach(box => {
                 if (box.key === "value") {
@@ -226,7 +191,7 @@ const InfoBoxes = ({ tickerMessages } : InfoBoxesProps) => {
 
             setInfoBoxProps(props);
         }
-    }, [activeFund]);
+    }, [localFund]);
 
     return (
         <>

@@ -8,24 +8,24 @@ import {
 } from "../../redux/slices/chanel/chanelSlice";
 import {IChannelAction} from "openfin-react-hooks";
 import {Dispatch} from "react";
-import {getWindowConfig1} from "../../common/utils";
+import {getWindowConfig2} from "../../common/utils";
 
 export const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any: any) => any, setNumberOfChildWindows: (any: any) => any) => {
     switch (numberOfChildWindows) {
         case 0 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig1(450, 10, 1000, 400));
+            const newWindow = await window.fin.Window.create(getWindowConfig2(450, 10, 1000, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 1 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig1(450, 1004, 1000, 400));
+            const newWindow = await window.fin.Window.create(getWindowConfig2(450, 1004, 1000, 400));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 2 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig1(900, 10, 1400, 200));
+            const newWindow = await window.fin.Window.create(getWindowConfig2(900, 10, 1400, 200));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
@@ -36,7 +36,7 @@ export const createInitialWindows = async (numberOfChildWindows: number, dispatc
     }
 };
 
-export const mainWindowActions = (dispatch: Dispatch<any>): IChannelAction[] => [
+export const childWindowActions = (dispatch: Dispatch<any>): IChannelAction[] => [
     {
         action: () => dispatch(increment()),
         topic: "increment",

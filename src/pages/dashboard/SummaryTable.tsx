@@ -9,7 +9,7 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {getGridTheme} from "../../helpers/agGrid";
 import {RootState} from "../../redux/slices/rootSlice";
-import {FundSummaryRow} from "../../services/bookKeeper/models";
+import {FundSummary, FundSummaryRow} from "../../services/bookKeeper/models";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -55,10 +55,11 @@ const gridOptions: GridOptions = {
 };
 
 interface SummaryTableProps {
-    activeSummaryRows: FundSummaryRow[]
+    activeSummaryRows?: FundSummaryRow[];
+    activeFundSummary?: FundSummary
 }
 
-const SummaryTable = ({ activeSummaryRows }: SummaryTableProps) => {
+const SummaryTable = ({activeSummaryRows, activeFundSummary}: SummaryTableProps) => {
     const classes = useStyles();
     const isDarkTheme = useSelector((state: RootState) => state.app.isDarkTheme);
     const [gridTheme, setGridTheme] = useState(getGridTheme(isDarkTheme));
@@ -85,14 +86,22 @@ const SummaryTable = ({ activeSummaryRows }: SummaryTableProps) => {
     }, [isDarkTheme]);
 
     useEffect(() => {
-        const transaction = gridApi?.getModel().isEmpty() ? {add: activeSummaryRows} : {update: activeSummaryRows};
-        gridApi?.applyTransactionAsync(transaction);
-    }, [activeSummaryRows, gridApi]);
+        if (!activeFundSummary) {
+            gridApi?.setRowData([])
+        } else {
+            if (gridApi?.getModel().isEmpty()) {
+                gridApi?.setRowData(activeSummaryRows ?? [])
+            } else {
+                const transaction = {update: activeSummaryRows};
+                gridApi?.applyTransactionAsync(transaction)
+            }
+        }
+    }, [activeSummaryRows, gridApi, activeFundSummary]);
 
     return (
         <Paper elevation={3} className={classes.root}>
             <div className={clsx(gridTheme, classes.summaryGrid)}>
-                <AgGridReact gridOptions={gridOptions} onGridReady={onGridReady} asyncTransactionWaitMillis={1000}>
+                <AgGridReact gridOptions={gridOptions} onGridReady={onGridReady} asyncTransactionWaitMillis={3000}>
                     <AgGridColumn
                         headerName="Asset"
                         field="assetCode"
@@ -131,7 +140,7 @@ const SummaryTable = ({ activeSummaryRows }: SummaryTableProps) => {
                         minWidth={140}/>
                     <AgGridColumn
                         headerName="Total P&L"
-                    field={"totalPNTL"}/>
+                        field={"totalPnl"}/>
                     <AgGridColumn
                         headerName="Allocation"
                         field="pctPortfolio"

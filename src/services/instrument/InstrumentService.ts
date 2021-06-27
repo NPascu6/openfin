@@ -8,7 +8,7 @@ export class InstrumentService extends RestService {
     private _baseUrl = REACT_APP_API_URI_INSTRUMENTS;
 
     get baseUrl(): string {
-        return this._baseUrl??"";
+        return this._baseUrl ?? "";
     }
 
     get authService(): AuthService {

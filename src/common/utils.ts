@@ -2,7 +2,7 @@ import {v4 as uuidv4} from "uuid";
 import {close} from "../redux/slices/chanel/chanelSlice";
 import {Dispatch} from "react";
 
-export const getWindowConfig = (top: number, left: number, width: number, height: number) => {
+export const getWindowConfig1 = (top: number, left: number, width: number, height: number) => {
     return {
         autoShow: true,
         defaultHeight: height,
@@ -12,7 +12,27 @@ export const getWindowConfig = (top: number, left: number, width: number, height
         minWidth: 450,
         frame: false,
         name: uuidv4(),
+        shouldLoadJsxAfterLaunch: true,
+        waitForPageLoad: true,
+        shouldClosePreviousOnLaunch: true,
         url: "/child-window",
+    }
+}
+
+export const getWindowConfig2 = (top: number, left: number, width: number, height: number) => {
+    return {
+        autoShow: true,
+        defaultHeight: height,
+        defaultTop: top,
+        defaultLeft: left,
+        defaultWidth: width,
+        minWidth: 450,
+        frame: false,
+        name: uuidv4(),
+        shouldLoadJsxAfterLaunch: true,
+        waitForPageLoad: true,
+        shouldClosePreviousOnLaunch: true,
+        url: "/dashboard",
     }
 }
 

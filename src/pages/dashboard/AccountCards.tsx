@@ -249,7 +249,7 @@ const AccountCard = ({account}: { account: Account }) => {
     const [balances, setBalances] = useState<Balance[]>([]);
 
     useEffect(() => {
-        const tempBalances:Balance[] = [];
+        const tempBalances: Balance[] = [];
         Object.keys(account.balances.total).forEach((key) => {
             const amount = +account.balances.total[key];
             if (Math.abs(amount) > MINIMUM_QTY_DISPLAY || account.type === AccountType.Funding) {

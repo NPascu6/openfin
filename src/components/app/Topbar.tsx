@@ -95,7 +95,7 @@ const Topbar = () => {
                     </Typography>
                 </div>
                 {location.pathname === '/' && <Grid item
-                      style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
+                                                    style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
                     {"Logged in as: " + profile?.name}
                 </Grid>}
                 <IconButton aria-label="Light/Dark" color="inherit" onClick={handleThemeChange}>

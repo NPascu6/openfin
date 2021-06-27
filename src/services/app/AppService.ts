@@ -2,7 +2,7 @@ import {User} from "oidc-client";
 import {AppDispatch, AppThunk} from "../../redux/store";
 import {setIsAppReady, setUser, setUserProfile} from "../../redux/slices/app/appSlice";
 import AuthService from "../auth/AuthService";
-import {fetchCurrencies} from "../../redux/thunks/instrument";
+import {fetchCurrencies, fetchInstruments} from "../../redux/thunks/instrument";
 import {fetchFirm} from "../../redux/thunks/bookkeeper";
 
 export const initApp = (): AppThunk => async (dispatch: AppDispatch) => {
@@ -15,6 +15,9 @@ const dispatchAppProps = async (dispatch: AppDispatch, user: User) => {
 
     const currencies = await fetchCurrencies();
     await dispatch(currencies);
+
+    const instruments = await fetchInstruments();
+    await dispatch(instruments);
 
     const firm = await fetchFirm();
     await dispatch(firm);

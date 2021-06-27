@@ -1,17 +1,14 @@
 import {InstrumentService} from "../../services/instrument/InstrumentService";
-import {setCurrencies} from "../slices/instruments/instrument";
-import {setOtcInstruments} from "../slices/otc/otc";
-import MarketDataService from "../../services/marketdata/MarketDataService";
+import {setCurrencies, setInstruments} from "../slices/instruments/instrument";
 
 export const fetchCurrencies = () => async (dispatch: (arg0: any) => void) => {
     const instrumentsService = new InstrumentService();
     const currencies = await instrumentsService.getCurrencies();
-    MarketDataService.setCurrencies(currencies)
     dispatch(setCurrencies(currencies));
 };
 
-export const fetchOtcInstruments = () => async (dispatch: (arg0: any) => void) => {
+export const fetchInstruments = () => async (dispatch: (arg0: any) => void) => {
     const instrumentsService = new InstrumentService();
-    const instruments = await instrumentsService.getOtcSpotInstruments();
-    dispatch(setOtcInstruments(instruments));
+    const instruments = await instrumentsService.getSpotInstruments('Covario');
+    dispatch(setInstruments(instruments));
 };

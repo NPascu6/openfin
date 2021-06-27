@@ -12,6 +12,12 @@ import {useDebounce} from "react-use";
 import {FundSummaryRow} from "../../services/bookKeeper/models";
 import {setActiveSummaryRows} from "../../redux/slices/bookKeeper/bookkeeper";
 import {RootState} from "../../redux/slices/rootSlice";
+import {MarketDataUpdateMessage, TickerMessage} from "../../services/marketdata/models";
+
+
+interface InfoBoxesProps {
+    tickerMessages: MarketDataUpdateMessage<TickerMessage>[];
+}
 
 export interface InfoBoxProps {
     key: string,
@@ -115,10 +121,11 @@ const InfoBox = (props: InfoBoxProps) => {
     )
 }
 
-const InfoBoxes = () => {
+
+
+const InfoBoxes = ({ tickerMessages } : InfoBoxesProps) => {
     const dispatch = useDispatch();
     const {activeFund, activeSummaryRows} = useSelector((state: RootState) => state.bookkeeper);
-    const tickerMessages = useSelector((state: RootState) => state.marketdata.tickerMessages);
     const dataRows = useRef<FundSummaryRow[] | undefined>(activeSummaryRows);
     const [infoBoxProps, setInfoBoxProps] = useState<InfoBoxProps[]>(defaultInfoBoxProps);
 

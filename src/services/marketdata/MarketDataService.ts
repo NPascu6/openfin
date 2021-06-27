@@ -2,49 +2,41 @@ import {HubConnectionState} from "@microsoft/signalr";
 //import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
 import {Observable, Subject, timer} from "rxjs";
 import {bufferTime, filter, groupBy, last, mergeMap} from "rxjs/operators";
-import {HubService} from "../HubService"
-import {
-    EventType,
-    MarketDataMessage,
-    MarketDataUpdateMessage,
-    SubscriptionRequest,
-    TickerMessage,
-} from "../../redux/slices/marketdata/models";
-import {Currency} from "../instrument/models";
+import {HubService} from "../HubService";
+import {EventType, MarketDataMessage, MarketDataUpdateMessage, SubscriptionRequest, TickerMessage,} from "./models";
 
 const {REACT_APP_API_URI_MARKETDATA, REACT_APP_STAGE} = process.env;
 
 export class MarketDataService extends HubService {
     private static instance: MarketDataService;
     private readonly _prevTickerMessages: Record<string, TickerMessage>;
-    private _instrumentCodes: string[] = [];
     private _onTickerUpdate: Subject<MarketDataUpdateMessage<TickerMessage>>;
-    private _currencies: Currency[] = [];
-
     private _methodNames = {
         RECEIVE_MESSAGE: "ReceiveMessage",
         UNSUBSCRIBE_ALL: "UnsubscribeAll",
         SUBSCRIBE: "Subscribe",
     };
 
-    public get instrumentCodes(): string[] {
-        return this._instrumentCodes;
-    }
-
     // keep this as this is singleton class
-    private constructor() {
+    public constructor() {
         super();
         this._onTickerUpdate = new Subject<MarketDataUpdateMessage<TickerMessage>>();
         this._prevTickerMessages = {};
-
-        this.tickerUpdate.subscribe(tickers=>{
+        this.tickerUpdate.subscribe(tickers => {
             tickers.forEach(data => {
                 this._prevTickerMessages[data.current.instrumentCode] = data.current;
             });
         })
     }
 
+    private _instrumentCodes: string[] | undefined;
+
+    public get instrumentCodes(): string[] | undefined {
+        return this._instrumentCodes;
+    }
+
     public get tickerUpdate(): Observable<MarketDataUpdateMessage<TickerMessage>[]> {
+        debugger
         const refreshTime = 5000;
         return this._onTickerUpdate
             .pipe(
@@ -66,63 +58,43 @@ export class MarketDataService extends HubService {
         return MarketDataService.instance;
     }
 
-    public setCurrencies(currencies: Currency[]){
-        this._currencies = currencies
-    }
-
-    public async start(): Promise<HubConnectionState> {
+    public async start(setMessage: any): Promise<HubConnectionState> {
         await this.stop();
+
         this.hubConnection.onreconnected(async (connectionId?: string) => {
             if (REACT_APP_STAGE === "development")
                 console.log("Connection Id", connectionId);
-            await this.subscribeTicker(this._currencies.map(c =>c.code));
+
+            await this.subscribeTicker([]);
         });
 
-        this.hubConnection.on(this._methodNames.RECEIVE_MESSAGE, (message) => this.onMessageReceived(message));
+        this.hubConnection.on(this._methodNames.RECEIVE_MESSAGE, (message) => setMessage(message ?? []));
 
-        if(this.isDisconnected)
+        if (this.isDisconnected)
             await this.hubConnection.start();
 
-
-        if(this.state === 'Connected'){
-            await this.subscribeTicker(['BTC']);
-        }
-
-        const subscriptionRequest: SubscriptionRequest = {
-            event: EventType.Ticker,
-            venueCode: "covario",
-            instrumentCode: 'BTC',
-        };
-        await this.hubConnection.invoke(this._methodNames.SUBSCRIBE, subscriptionRequest);
         return this.state;
-    }
-
-    protected async beforeStop(): Promise<void> {
-        await this.unsubscribe();
     }
 
     public async unsubscribe(): Promise<void> {
         await this.hubConnection.invoke(this._methodNames.UNSUBSCRIBE_ALL);
     }
 
-    public async subscribeTicker(instrumentCodes: string[] = []): Promise<void> {
-        if (!instrumentCodes && this._instrumentCodes)
-            instrumentCodes = this._instrumentCodes;
-
-        if (this._instrumentCodes && this._instrumentCodes.length > 0) {
-            await this.unsubscribe();
+    public async subscribeTicker(instrumentCodes: string[] | undefined): Promise<void> {
+        if(instrumentCodes){
+            instrumentCodes.forEach(async code => {
+                const subscriptionRequest: SubscriptionRequest = {
+                    event: EventType.Ticker,
+                    venueCode: "covario",
+                    instrumentCode: code ? code : '',
+                };
+                await this.hubConnection.invoke(this._methodNames.SUBSCRIBE, subscriptionRequest);
+            })
         }
+    }
 
-        for (const instrument of instrumentCodes?.filter(i => i.length > 0)) {
-            const subscriptionRequest: SubscriptionRequest = {
-                event: EventType.Ticker,
-                venueCode: "covario",
-                instrumentCode: instrument,
-            };
-            await this.hubConnection.invoke(this._methodNames.SUBSCRIBE, subscriptionRequest);
-        }
-
-        this._instrumentCodes = instrumentCodes;
+    protected async beforeStop(): Promise<void> {
+        await this.unsubscribe();
     }
 
     private onMessageReceived(message: MarketDataMessage): void {
@@ -148,6 +120,7 @@ export class MarketDataService extends HubService {
     }
 
     private processTicker(item: MarketDataMessage): void {
+        debugger
         const data: TickerMessage = item.data;
         if (data.volume !== 0) {
             this._onTickerUpdate.next({

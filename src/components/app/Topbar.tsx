@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import BrightnessHighIcon from "@material-ui/icons/BrightnessHigh";
 import clsx from "clsx";
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsDarkTheme} from "../../redux/slices/app/appSlice";
 import {RootState} from "../../redux/slices/rootSlice";
@@ -21,7 +21,6 @@ import LinkIcon from '@material-ui/icons/Link';
 import {useLocation} from "react-use";
 import {useDocked, useMaximized} from "openfin-react-hooks";
 import {FullscreenSharp} from "@material-ui/icons";
-import {joinMainWindow} from "../../common/utils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

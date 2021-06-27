@@ -10,13 +10,13 @@ export abstract class RestService {
     };
 
     protected async fetchData(subPath: string, params: any = undefined): Promise<AxiosResponse> {
-        const accessToken = await this.getToken();
+        const user = await this.authService?.getUser();
         const path = `${this.baseUrl}/${subPath}`;
         try {
             return await axios.get(path, {
                 params,
                 headers: {
-                    authorization: `Bearer ${accessToken}`,
+                    authorization: `Bearer ${user?.access_token}`,
                     accept: "application/json",
                 },
             })

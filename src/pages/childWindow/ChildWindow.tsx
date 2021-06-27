@@ -4,7 +4,6 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/slices/rootSlice";
 import Topbar from "../../components/app/Topbar";
-import InfoBoxes from "../dashboard/InfoBoxes";
 import {Grid} from "@material-ui/core";
 
 const CHANNEL_NAME = "test";
@@ -27,9 +26,6 @@ const ChildWindow: React.FC = () => {
     return (
         <div>
             <Topbar/>
-            <Grid container>
-                <InfoBoxes/>
-            </Grid>
             <Grid container>
                 <Ticker setLocalTicker={setLocalTicker}/>
                 <button onClick={async () => await client.dispatch("increment")}>

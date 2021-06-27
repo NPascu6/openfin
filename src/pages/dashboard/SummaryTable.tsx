@@ -9,6 +9,7 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {getGridTheme} from "../../helpers/agGrid";
 import {RootState} from "../../redux/slices/rootSlice";
+import {FundSummaryRow} from "../../services/bookKeeper/models";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -53,10 +54,13 @@ const gridOptions: GridOptions = {
     },
 };
 
-const SummaryTable = () => {
+interface SummaryTableProps {
+    activeSummaryRows: FundSummaryRow[]
+}
+
+const SummaryTable = ({ activeSummaryRows }: SummaryTableProps) => {
     const classes = useStyles();
     const isDarkTheme = useSelector((state: RootState) => state.app.isDarkTheme);
-    const {activeSummaryRows} = useSelector((state: RootState) => state.bookkeeper);
     const [gridTheme, setGridTheme] = useState(getGridTheme(isDarkTheme));
     const [gridApi, setGridApi] = useState<GridApi>();
 
@@ -126,7 +130,8 @@ const SummaryTable = () => {
                         field="unrealizedPnl"
                         minWidth={140}/>
                     <AgGridColumn
-                        headerName="Total P&L"/>
+                        headerName="Total P&L"
+                    field={"totalPNTL"}/>
                     <AgGridColumn
                         headerName="Allocation"
                         field="pctPortfolio"

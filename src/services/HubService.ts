@@ -44,7 +44,7 @@ export abstract class HubService {
         this._accessToken = user.access_token ?? '';
     }
 
-    public abstract start(): Promise<HubConnectionState>;
+    public abstract start(set : any): Promise<HubConnectionState>;
 
     public async stop(): Promise<HubConnectionState> {
         if (this.isConnected) {
@@ -64,7 +64,7 @@ export abstract class HubService {
 
     protected async restart(): Promise<HubConnectionState> {
         await this.stop();
-        return await this.start();
+        return await this.start([]);
     }
 
     private ensureConnection(): HubConnection {

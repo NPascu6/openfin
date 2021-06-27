@@ -11,6 +11,7 @@ import {fetchActiveFundSummary} from "../../redux/thunks/bookkeeper";
 import AccountCards from "./AccountCards";
 import InfoBoxes from "./InfoBoxes";
 import SummaryTable from "./SummaryTable";
+import {MarketDataUpdateMessage, TickerMessage} from "../../services/marketdata/models";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,10 +31,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const AllocationPieChart = lazy(() => import("./AllocationPieChart"));
 
-const Dashboard = () => {
+
+interface DashboardProps {
+    tickerMessages: MarketDataUpdateMessage<TickerMessage>[];
+}
+
+const Dashboard = ( { tickerMessages } : DashboardProps) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const {activeFund, activeFundSummary} = useSelector((state: RootState) => state.bookkeeper);
+    const {activeFund, activeFundSummary, activeSummaryRows} = useSelector((state: RootState) => state.bookkeeper);
 
     useEffect(() => {
         if (activeFund) {
@@ -48,7 +54,6 @@ const Dashboard = () => {
 
         if (!MarketDataService.isConnected) {
             const subscribeData = async () => {
-                await MarketDataService.start();
                 if (activeFundSummary.assets) {
                     await MarketDataService.subscribeTicker(
                         activeFundSummary.assets
@@ -66,9 +71,9 @@ const Dashboard = () => {
     return (
         <div className={classes.root}>
             <Grid container spacing={2} justify="flex-start">
-                <InfoBoxes/>
+                <InfoBoxes tickerMessages={tickerMessages}/>
                 <Grid item xs={12} md={12} lg={9} className={classes.summary}>
-                    <SummaryTable/>
+                    <SummaryTable activeSummaryRows={activeSummaryRows ?? []}/>
                 </Grid>
                 <Grid item xs={12} md={12} lg={3} className={classes.summary}>
                     <Paper elevation={3} className={classes.chart}>

@@ -5,8 +5,6 @@ import bookkeeperReducer from "./bookKeeper/bookkeeper";
 import instrumentReducer from "./instruments/instrument";
 import appReducer from "./app/appSlice";
 import channelReducer from "./chanel/chanelSlice";
-import marketdataReducer from "./marketdata/marketdata";
-import otcReducer from "./otc/otc";
 
 const appPersistConfig = {
     key: 'app',
@@ -29,8 +27,6 @@ const rootSlice = combineReducers({
     channel: persistReducer(channelPersistConfig, channelReducer),
     bookkeeper: persistReducer(bookkeeperPersistConfig, bookkeeperReducer),
     instrument: instrumentReducer,
-    marketdata: marketdataReducer,
-    otc: otcReducer
 });
 
 export type RootState = ReturnType<typeof rootSlice>;

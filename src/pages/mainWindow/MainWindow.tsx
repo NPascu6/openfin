@@ -9,9 +9,15 @@ import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import {createInitialWindows, mainWindowActions} from "./mainWindowActions";
 import {closeChildWindows, closeWindowRemote} from "../../common/utils";
 import {ChannelProvider} from "openfin/_v2/api/interappbus/channel/provider";
-import MarketDataService from "../../services/marketdata/MarketDataService";
+import {MarketDataService} from "../../services/marketdata/MarketDataService";
 import SummaryTable from "../dashboard/SummaryTable";
 import ChildWindowList from "../childWindow/ChildWindowList";
+import AuthService from "../../services/auth/AuthService";
+import {fetchFirm} from "../../redux/thunks/bookkeeper";
+import {setUser, setUserProfile} from "../../redux/slices/app/appSlice";
+import {fetchCurrencies, fetchInstruments} from "../../redux/thunks/instrument";
+import {useDebounce} from "react-use";
+import {FundSummaryRow} from "../../services/bookKeeper/models";
 
 const CHANNEL_NAME = "test";
 
@@ -50,13 +56,17 @@ const CHANNEL_NAME = "test";
 
 const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
-    const {activeFundSummary} = useSelector((state: RootState) => state.bookkeeper);
+    const {activeSummaryRows, activeFundSummary} = useSelector((state: RootState) => state.bookkeeper);
+    const {instruments} = useSelector((state: RootState) => state.instrument);
     const {childWindows, count, statuses} = useSelector((state: RootState) => state.channel);
+    const {user} = useSelector((state: RootState) => state.app);
     const [localCount, setLocalCount] = useState<number>(0)
     const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
     const [localProvider, setLocalProvider] = useState<ChannelProvider>()
     const {provider} = useChannelProvider(CHANNEL_NAME, mainWindowActions(dispatch));
     const [isChildWindowListOpen, setIsChildWindowListOpen] = useState<boolean>(false)
+    const [message, setMessage] = useState<any>([])
+    const [localRows, setLocalRows] = useState<FundSummaryRow[]>([])
 
     const handleCloseAll = () => {
         const application = fin.desktop.Application.getCurrent();
@@ -69,7 +79,7 @@ const MainWindow: React.FC = () => {
         let nrOfChildWindows = numberOfChildWindows
         const app = await fin.Application.getCurrent();
 
-        let mainWindow =await fin.Window.getCurrent()
+        let mainWindow = await fin.Window.getCurrent()
         if (numberOfChildWindows < 3)
             for (let i = 0; i < 3; i++) {
                 createInitialWindows(nrOfChildWindows, dispatch, setNumberOfChildWindows).then(async () => {
@@ -86,6 +96,26 @@ const MainWindow: React.FC = () => {
             createChildWindows()
         }
     }
+
+    const startMarketData = async () => {
+        const service = new MarketDataService()
+        if (user) {
+            await service.registerUser(user);
+            await service.start(setMessage)
+            service.subscribeTicker(instruments?.map(c => c.code))
+        }
+    }
+
+    const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
+        e.preventDefault();
+        if (value === true) {
+            dispatch(setUser(null))
+            dispatch(setUserProfile(null))
+            await AuthService.removeUser()
+            await AuthService.startSignoutMainWindow();
+            return;
+        }
+    };
 
     useEffect(() => {
         if (provider) {
@@ -107,23 +137,39 @@ const MainWindow: React.FC = () => {
     }, [count])
 
     useEffect(() => {
-        if (!activeFundSummary) return;
+        if (activeSummaryRows) {
+            setLocalRows(activeSummaryRows)
+        }
+    }, [activeSummaryRows])
 
-        if (MarketDataService.isConnected) {
-            const subscribeData = async () => {
-                if (activeFundSummary.assets) {
-                    await MarketDataService.subscribeTicker(
-                        activeFundSummary.assets
-                            .filter((a) => a.asset !== activeFundSummary.currency)
-                            ?.map((r) => `${r.asset}-${activeFundSummary.currency}`)
-                    );
-                }
-            };
+    useDebounce(() => {
+        const rows: FundSummaryRow[] = [];
+        if (message && message.data) {
+            activeSummaryRows?.forEach((r) => {
+                const row = {...r};
+                Object.keys(message.data).forEach((key: any) => {
+                    if (row.quantity && row.quantity > 0)
+                        if (row && row.instrumentCode === message.data.instrumentCode && r && r.price) {
+                            const last = +message.data.last;
+                            const prev = +r.price;
+                            const change = ((last - prev) / prev) * 100;
+                            row.price = last;
+                            row.value = row.quantity ? row.quantity : 1 * row.price;
+                            row.pctChange = change;
+                            if (row.open24H)
+                                row.pct24HChange = row.open24H === 0 ? 0 : ((last - row.open24H) / row.open24H) * 100;
+                            if (row.averageCost && row.quantity)
+                                row.unrealizedPnl = row.averageCost === 0 ? 0 : (last - row.averageCost) * row.quantity;
+                        }
+                });
 
-            subscribeData().then();
+                rows.push(row);
+            });
+
+            setLocalRows(rows)
         }
 
-    }, [activeFundSummary]);
+    }, 200, [message, activeSummaryRows])
 
 
     return (
@@ -148,9 +194,44 @@ const MainWindow: React.FC = () => {
                 >
                     Push
                 </Button>
+                <Button
+                    variant={"outlined"}
+                    size={"small"}
+                    onClick={() => dispatch(fetchFirm())}
+                >
+                    Get Firm
+                </Button>
+                <Button
+                    variant={"outlined"}
+                    size={"small"}
+                    onClick={() => dispatch(fetchCurrencies())}
+                >
+                    Get Currencies
+                </Button>
+                <Button
+                    variant={"outlined"}
+                    size={"small"}
+                    onClick={() => dispatch(fetchInstruments())}
+                >
+                    Get Instruments
+                </Button>
+                <Button
+                    variant={"outlined"}
+                    size={"small"}
+                    onClick={(e) => handleSignout(e, true)}
+                >
+                    Sign out
+                </Button>
+                <Button
+                    variant={"outlined"}
+                    size={"small"}
+                    onClick={() => startMarketData()}
+                >
+                    Start MArket Data
+                </Button>
             </Grid>
             <Grid container>
-                <SummaryTable/>
+                <SummaryTable activeSummaryRows={localRows ?? []}/>
             </Grid>
             <Grid container>
                 <Grid item>

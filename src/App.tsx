@@ -7,12 +7,11 @@ import {RootState} from "./redux/slices/rootSlice";
 import AppLoading from "./components/loading/AppLoading";
 import {BrowserRouter} from "react-router-dom";
 import {darkTheme, lightTheme} from "./themes";
-import {setUser, setUserProfile} from "./redux/slices/app/appSlice";
 
 const App = () => {
     const dispatch = useDispatch()
     const [theme, setTheme] = useState<Theme>();
-    const {isDarkTheme, isAppReady, user} = useSelector((state: RootState) => state.app);
+    const {isDarkTheme, user} = useSelector((state: RootState) => state.app);
     const {childWindows} = useSelector((state: RootState) => state.channel);
 
     useEffect(() => {
@@ -24,18 +23,6 @@ const App = () => {
             dispatch(initApp())
         }
     }, [dispatch, user, childWindows])
-
-    useEffect(() => {
-        if (isAppReady) {
-            console.log(`App ready: ${isAppReady}`)
-            console.log(user)
-
-            dispatch(setUser(user))
-            if (user){
-                dispatch(setUserProfile(user.profile))
-            }
-        }
-    }, [isAppReady, user, dispatch])
 
     return (
         <BrowserRouter>

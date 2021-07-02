@@ -7,9 +7,9 @@ import {AgGridReact} from "ag-grid-react/lib/agGridReact";
 import clsx from "clsx";
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {getGridTheme} from "../../helpers/agGrid";
-import {RootState} from "../../redux/slices/rootSlice";
-import {FundSummary, FundSummaryRow} from "../../services/bookKeeper/models";
+import {getGridTheme} from "../../src/helpers/agGrid";
+import {RootState} from "../../src/redux/slices/rootSlice";
+import {FundSummary, FundSummaryRow} from "../../src/services/bookKeeper/models";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

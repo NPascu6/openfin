@@ -3,9 +3,8 @@ import {
     close,
     decrement,
     increment,
-    setPushMessage,
     setWindow
-} from "../../redux/slices/chanel/chanelSlice";
+} from "../../redux/slices/main-channel/mainChanelSlice";
 import {IChannelAction} from "openfin-react-hooks";
 import {Dispatch} from "react";
 import {getWindowConfig1} from "../../common/utils";
@@ -52,11 +51,7 @@ export const mainWindowActions = (dispatch: Dispatch<any>): IChannelAction[] => 
     {
         action: (payload: any) => dispatch(close(payload)),
         topic: "close",
-    },
-    {
-        action: (payload: any) => dispatch(setPushMessage(payload)),
-        topic: "close",
-    },
+    }
 ];
 
 

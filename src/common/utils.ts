@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from "uuid";
-import {close} from "../redux/slices/chanel/chanelSlice";
+import {close} from "../redux/slices/main-channel/mainChanelSlice";
 import {Dispatch} from "react";
 
 export const getWindowConfig1 = (top: number, left: number, width: number, height: number) => {

@@ -7,7 +7,7 @@ import {
     FundSummaryRow,
     JournalEntry,
     TradeEntry
-} from "../../../services/bookKeeper/models";
+} from "../../src/services/bookKeeper/models";
 
 export interface BookkeeperState {
     firm?: Firm;

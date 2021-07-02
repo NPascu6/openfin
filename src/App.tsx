@@ -12,7 +12,7 @@ const App = () => {
     const dispatch = useDispatch()
     const [theme, setTheme] = useState<Theme>();
     const {isDarkTheme, user} = useSelector((state: RootState) => state.app);
-    const {childWindows} = useSelector((state: RootState) => state.channel);
+    const {childWindows} = useSelector((state: RootState) => state.mainChannel);
 
     useEffect(() => {
         setTheme(responsiveFontSizes(isDarkTheme ? darkTheme : lightTheme));

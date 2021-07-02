@@ -20,7 +20,7 @@
     "defaultTop": 50,
     "resizable": true,
     "frame": false,
-    "saveWindowState": false,
+    "saveWindowState": true,
     "loadErrorMessage": "There was an error loading the application."
   },
   "services": [

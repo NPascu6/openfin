@@ -1,32 +1,22 @@
 import {combineReducers} from "@reduxjs/toolkit";
 import {persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import bookkeeperReducer from "./bookKeeper/bookkeeper";
-import instrumentReducer from "./instruments/instrument";
 import appReducer from "./app/appSlice";
-import channelReducer from "./chanel/chanelSlice";
+import mainChannelReducer from "./main-channel/mainChanelSlice";
 
 const appPersistConfig = {
     key: 'app',
     storage: storage,
 };
 
-const bookkeeperPersistConfig = {
-    key: 'bookkeeper',
-    storage: storage,
-    whitelist: ['activeFundId'],
-};
-
 const channelPersistConfig = {
-    key: 'channel',
+    key: 'mainChannelReducer',
     storage: storage,
 };
 
 const rootSlice = combineReducers({
     app: persistReducer(appPersistConfig, appReducer),
-    channel: persistReducer(channelPersistConfig, channelReducer),
-    bookkeeper: persistReducer(bookkeeperPersistConfig, bookkeeperReducer),
-    instrument: instrumentReducer,
+    mainChannel: persistReducer(channelPersistConfig, mainChannelReducer),
 });
 
 export type RootState = ReturnType<typeof rootSlice>;

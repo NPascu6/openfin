@@ -2,7 +2,7 @@ import {LinearProgress} from "@material-ui/core";
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {useDebounce} from "react-use";
-import {RootState} from "../../redux/slices/rootSlice";
+import {RootState} from "../../src/redux/slices/rootSlice";
 import Plot from "react-plotly.js";
 
 const colorway = ["rgb(157,49,46)", "rgb(221,132,82)", "rgb(76,114,176)", "rgb(85,168,104)", "rgb(129,114,179)", "rgb(147,120,96)", "rgb(218,139,195)", "rgb(140,140,140)", "rgb(204,185,116)", "rgb(100,181,205)"]

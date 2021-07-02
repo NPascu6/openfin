@@ -24,11 +24,11 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import clsx from "clsx";
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {amountFormatter, cryptoNumberFormatter, MINIMUM_QTY_DISPLAY} from "../../helpers/app";
-import {getCurrencyByAssetCode} from "../../helpers/instrument";
-import {Account, AccountType, Balance, TradeType} from "../../services/bookKeeper/models";
-import {Currency} from "../../services/instrument/models";
-import {RootState} from "../../redux/slices/rootSlice";
+import {amountFormatter, cryptoNumberFormatter, MINIMUM_QTY_DISPLAY} from "../../src/helpers/app";
+import {getCurrencyByAssetCode} from "../../src/helpers/instrument";
+import {Account, AccountType, Balance, TradeType} from "../../src/services/bookKeeper/models";
+import {Currency} from "../../src/services/instrument/models";
+import {RootState} from "../../src/redux/slices/rootSlice";
 
 const lodash = require("lodash")
 

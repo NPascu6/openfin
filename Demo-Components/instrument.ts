@@ -1,5 +1,5 @@
-import {InstrumentService} from "../../services/instrument/InstrumentService";
-import {setCurrencies, setInstruments} from "../slices/instruments/instrument";
+import {InstrumentService} from "../src/services/instrument/InstrumentService";
+import {setCurrencies, setInstruments} from "./instruments/instrument";
 
 export const fetchCurrencies = () => async (dispatch: (arg0: any) => void) => {
     const instrumentsService = new InstrumentService();

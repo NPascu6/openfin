@@ -8,8 +8,8 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import clsx from "clsx";
 import React, {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
-import {Fund, FundSummaryRow} from "../../services/bookKeeper/models";
-import {RootState} from "../../redux/slices/rootSlice";
+import {Fund, FundSummaryRow} from "../../src/services/bookKeeper/models";
+import {RootState} from "../../src/redux/slices/rootSlice";
 
 
 interface InfoBoxesProps {

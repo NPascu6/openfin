@@ -1,13 +1,13 @@
-import {BookkeeperService} from "../../services/bookKeeper/BookkeeperService";
-import {Fund, FundSummary, FundSummaryRow, JournalEntry,} from "../../services/bookKeeper/models";
+import {BookkeeperService} from "../src/services/bookKeeper/BookkeeperService";
+import {Fund, FundSummary, FundSummaryRow, JournalEntry,} from "../src/services/bookKeeper/models";
 import {
     setActiveFund,
     setActiveFundSummary,
     setActiveSummaryRows,
     setFirm,
     setJournalEntries,
-} from "../slices/bookKeeper/bookkeeper";
-import {RootState} from "../slices/rootSlice";
+} from "./bookKeeper/bookkeeper";
+import {RootState} from "../src/redux/slices/rootSlice";
 
 export const fetchFirm = (setActiveFund: boolean = true) => async (dispatch: any, getState: any) => {
     const firmService = new BookkeeperService();

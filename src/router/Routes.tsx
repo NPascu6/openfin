@@ -2,9 +2,9 @@ import React from "react";
 import {Route, Switch} from "react-router-dom";
 import ForbiddenPage from "../pages/errors/403";
 import NotFoundPage from "../pages/errors/404";
-import MainWindow from "../pages/mainWindow/MainWindow";
+import MainWindow from "../pages/main-window/MainWindow";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import ChildWindow from "../pages/childWindow/ChildWindow";
+import ChildWindow from "../pages/child-window/ChildWindow";
 
 export interface RouteDefinition {
     path: string;

@@ -23,11 +23,10 @@ const NotFoundPage: React.FC = () => {
                 [Oops]
             </Typography>
             <Typography variant="h6" gutterBottom>
-                We cannot find the page you wanted.
+                API Connection Lost, please re-open window.
             </Typography>
             <p style={{textAlign: "center"}}>
-                <Button variant="contained" color="primary" to="/" aria-label={'Home'} component={Link}>Go to
-                    Home</Button>
+                <Button variant="contained" color="primary" to="/" aria-label={'Home'} component={Link}>Reload</Button>
             </p>
         </div>
     );

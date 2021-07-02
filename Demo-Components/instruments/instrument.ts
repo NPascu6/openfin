@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Currency, SpotInstrument} from "../../../services/instrument/models";
+import {Currency, SpotInstrument} from "../../src/services/instrument/models";
 
 export interface InstrumentsState {
     currencies?: Currency[];

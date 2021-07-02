@@ -3,55 +3,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/slices/rootSlice";
 import React, {useEffect, useState} from "react";
 import Prism from "prismjs";
-import {Identity} from "openfin/_v2/identity";
-import {clearClients, onConnection, onDisconnection, setPushMessage,} from "../../redux/slices/chanel/chanelSlice";
-import {Button, Grid, TextField, Typography} from "@material-ui/core";
+import {clearClients, onConnection, onDisconnection} from "../../redux/slices/main-channel/mainChanelSlice";
+import {Button, Grid} from "@material-ui/core";
 import {createInitialWindows, mainWindowActions} from "./mainWindowActions";
-import {closeChildWindows, closeWindowRemote} from "../../common/utils";
+import {closeChildWindows} from "../../common/utils";
 import {ChannelProvider} from "openfin/_v2/api/interappbus/channel/provider";
-import ChildWindowList from "../childWindow/ChildWindowList";
 import AuthService from "../../services/auth/AuthService";
 import {setUser, setUserProfile} from "../../redux/slices/app/appSlice";
-import {fetchCurrencies} from "../../redux/thunks/instrument";
-import {fetchFirm} from "../../redux/thunks/bookkeeper";
+import {Identity} from "openfin/_v2/identity";
 
 const CHANNEL_NAME = "test";
 
-// const ProfilePage = () => {
-//     const dispatch = useDispatch();
-//     const [numberOfChildWindows, setNumberOfChildWindows] = useState<number>(0)
-//
-//     const handleCloseAll = () => {
-//         const application = fin.desktop.Application.getCurrent();
-//         closeChildWindows(application)
-//         dispatch(clearClients())
-//         setNumberOfChildWindows(0)
-//     }
-//     const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
-//         e.preventDefault();
-//
-//         dispatch(setUser(null))
-//         dispatch(setUserProfile(null))
-//         dispatch(setIsSignoutOpen(false));
-//         handleCloseAll()
-//
-//         if (value === true) {
-//             await AuthService.startSignoutMainWindow();
-//             return;
-//         }
-//     };
-//
-//     return  <Grid container>
-//         <Button
-//             style={{height: '2.5em', fontSize: 12}}
-//             size={"small"}
-//             variant={'outlined'} onClick={(e) => handleSignout(e, true)}>Sign out</Button>
-//     </Grid>
-// }
-
 const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
-    const {childWindows, count, statuses} = useSelector((state: RootState) => state.channel);
+    const {childWindows, count} = useSelector((state: RootState) => state.mainChannel);
     const [localCount, setLocalCount] = useState<number>(0)
     const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
     const [localProvider, setLocalProvider] = useState<ChannelProvider>()
@@ -119,17 +84,6 @@ const MainWindow: React.FC = () => {
     return (
         <Grid container>
             <Grid item>
-                <TextField
-                    variant={"outlined"}
-                    size={"small"}
-                    placeholder="Type your message"
-                    type="text"
-                    onChange={(e) =>
-                        dispatch(setPushMessage(e.target.value))
-                    }
-                />
-            </Grid>
-            <Grid item>
                 <Button
                     variant={"outlined"}
                     size={"small"}
@@ -148,30 +102,6 @@ const MainWindow: React.FC = () => {
             </Grid>
             <Grid container>
                 <Grid item>
-                    {statuses && statuses.map((c, key) => (
-                        <div key={key}>
-                            <Typography variant={"body2"}>{key + ' - ' + c.msg}</Typography>
-                            <Button
-                                variant={"outlined"}
-                                size={"small"} onClick={() => closeWindowRemote(c.name, dispatch)}>close</Button>
-                        </div>
-                    ))}
-                </Grid>
-                <Grid item>
-                    <Button
-                        variant={"outlined"}
-                        size={"small"}
-                        onClick={() => dispatch(fetchCurrencies())}
-                    >
-                        Get Currencies
-                    </Button>
-                    <Button
-                        variant={"outlined"}
-                        size={"small"}
-                        onClick={() => dispatch(fetchFirm())}
-                    >
-                        Get Firm
-                    </Button>
                     <Button
                         variant={"outlined"}
                         size={"small"} onClick={() => createChildWindows()}>Create Child Windows</Button>
@@ -190,8 +120,6 @@ const MainWindow: React.FC = () => {
 
                 <strong>Count:</strong> {localCount}
             </Grid>
-            <ChildWindowList isOpen={isChildWindowListOpen}
-                             setOpen={setIsChildWindowListOpen}/>
         </Grid>
     );
 }

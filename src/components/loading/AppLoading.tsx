@@ -5,7 +5,6 @@ import AppLoader from "./AppLoader";
 import Main from "../app/Main";
 
 const Page = () => {
-
     return (<Main/>)
 }
 

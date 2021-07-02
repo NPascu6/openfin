@@ -3,9 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/slices/rootSlice";
 import React, {useEffect, useState} from "react";
 import Prism from "prismjs";
-import {
-    clearClients,
-} from "../../redux/slices/main-channel/mainChanelSlice";
+import {clearClients,} from "../../redux/slices/main-channel/mainChanelSlice";
 import {Button, Grid, Typography} from "@material-ui/core";
 import {createInitialWindows, mainWindowActions} from "./mainWindowActions";
 import {closeChildWindows} from "../../common/utils";
@@ -17,6 +15,7 @@ const CHANNEL_NAME = "test";
 
 const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
+    const {isDarkTheme} = useSelector((state: RootState) => state.app);
     const {childWindows, count, statuses} = useSelector((state: RootState) => state.mainChannel);
     const [localCount, setLocalCount] = useState<number>(0)
     const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
@@ -52,7 +51,8 @@ const MainWindow: React.FC = () => {
     const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
         e.preventDefault();
         if (value === true) {
-            closeChildWindows(childWindows)
+            if (childWindows.length > 0)
+                closeChildWindows(childWindows)
             dispatch(setUser(null))
             dispatch(setUserProfile(null))
             await AuthService.removeUser()
@@ -61,16 +61,15 @@ const MainWindow: React.FC = () => {
         }
     };
 
-    const { provider } = useChannelProvider(CHANNEL_NAME, mainWindowActions(dispatch));
+    const {provider} = useChannelProvider(CHANNEL_NAME, mainWindowActions(dispatch));
 
     useEffect(() => {
-        debugger
         if (provider) {
             provider.onConnection((identity: Identity) => {
-                dispatch({ type: "onConnection", payload: { identity } });
+                dispatch({type: "onConnection", payload: {identity}});
             });
             provider.onDisconnection((identity: Identity) => {
-                dispatch({ type: "onDisconnection", payload: { identity } });
+                dispatch({type: "onDisconnection", payload: {identity}});
             });
         }
         Prism.highlightAll();
@@ -81,6 +80,15 @@ const MainWindow: React.FC = () => {
             setLocalCount(count)
         }
     }, [count])
+
+    useEffect(() => {
+        if (isDarkTheme && provider) {
+            provider.publish("setTheme", isDarkTheme)
+        }
+        if (!isDarkTheme && provider) {
+            provider.publish("setTheme", isDarkTheme)
+        }
+    }, [isDarkTheme, provider])
 
     return (
         <Grid container>
@@ -118,6 +126,13 @@ const MainWindow: React.FC = () => {
             <Grid container>
                 <strong>Count:</strong> {localCount}
             </Grid>
+            <h4>Send a message to client(s)</h4>
+            <button
+                onClick={() => provider.publish("setTheme", isDarkTheme)}
+                disabled={Object.keys(childWindows).length === 0}
+            >
+                Set Theme
+            </button>
         </Grid>
     );
 }

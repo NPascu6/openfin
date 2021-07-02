@@ -5,14 +5,15 @@ export interface MainState {
     count: number;
     childWindows?: any;
     clients: any[],
-    statuses: any []
+    statuses: any [],
+    mainProvider?: any
 }
 
 const initialState: MainState = {
     childWindows: [],
     count: 0,
     clients: [],
-    statuses: []
+    statuses: [],
 };
 
 const channelSlice = createSlice({
@@ -51,6 +52,7 @@ const channelSlice = createSlice({
             }
         },
         onConnection: function (state,action: PayloadAction<any>) {
+            debugger
             const { statuses } = state;
             const { identity } = action.payload;
             return {
@@ -90,7 +92,10 @@ const channelSlice = createSlice({
         clearClients(state) {
             state.clients = []
             state.childWindows = []
-        }
+        },
+        setMainProvider(state, action: PayloadAction<any>) {
+            state.mainProvider = action.payload
+        },
     },
 });
 
@@ -104,7 +109,8 @@ export const {
     clearClients,
     setChildWindow,
     onDisconnection,
-    onConnection
+    onConnection,
+    setMainProvider
 } = channelSlice.actions;
 
 export default channelSlice.reducer;

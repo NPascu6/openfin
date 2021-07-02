@@ -3,11 +3,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/slices/rootSlice";
 import React, {useEffect, useState} from "react";
 import Prism from "prismjs";
-import {clearClients, onConnection, onDisconnection} from "../../redux/slices/main-channel/mainChanelSlice";
-import {Button, Grid} from "@material-ui/core";
+import {
+    clearClients,
+} from "../../redux/slices/main-channel/mainChanelSlice";
+import {Button, Grid, Typography} from "@material-ui/core";
 import {createInitialWindows, mainWindowActions} from "./mainWindowActions";
 import {closeChildWindows} from "../../common/utils";
-import {ChannelProvider} from "openfin/_v2/api/interappbus/channel/provider";
 import AuthService from "../../services/auth/AuthService";
 import {setUser, setUserProfile} from "../../redux/slices/app/appSlice";
 import {Identity} from "openfin/_v2/identity";
@@ -16,12 +17,9 @@ const CHANNEL_NAME = "test";
 
 const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
-    const {childWindows, count} = useSelector((state: RootState) => state.mainChannel);
+    const {childWindows, count, statuses} = useSelector((state: RootState) => state.mainChannel);
     const [localCount, setLocalCount] = useState<number>(0)
     const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
-    const [localProvider, setLocalProvider] = useState<ChannelProvider>()
-    const {provider} = useChannelProvider(CHANNEL_NAME, mainWindowActions(dispatch));
-    const [isChildWindowListOpen, setIsChildWindowListOpen] = useState<boolean>(false)
 
     const handleCloseAll = () => {
         const application = fin.desktop.Application.getCurrent();
@@ -54,6 +52,7 @@ const MainWindow: React.FC = () => {
     const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
         e.preventDefault();
         if (value === true) {
+            closeChildWindows(childWindows)
             dispatch(setUser(null))
             dispatch(setUserProfile(null))
             await AuthService.removeUser()
@@ -62,15 +61,17 @@ const MainWindow: React.FC = () => {
         }
     };
 
+    const { provider } = useChannelProvider(CHANNEL_NAME, mainWindowActions(dispatch));
+
     useEffect(() => {
+        debugger
         if (provider) {
             provider.onConnection((identity: Identity) => {
-                dispatch(onConnection(identity));
+                dispatch({ type: "onConnection", payload: { identity } });
             });
             provider.onDisconnection((identity: Identity) => {
-                dispatch(onDisconnection(identity));
+                dispatch({ type: "onDisconnection", payload: { identity } });
             });
-            setLocalProvider(provider)
         }
         Prism.highlightAll();
     }, [provider, dispatch]);
@@ -84,14 +85,16 @@ const MainWindow: React.FC = () => {
     return (
         <Grid container>
             <Grid item>
-                <Button
-                    variant={"outlined"}
-                    size={"small"}
-                    onClick={() => provider.publish("pushMessage", localProvider)}
-                    disabled={Object.keys(childWindows).length === 0}
-                >
-                    Push
-                </Button>
+                {statuses && statuses.map((c, key) => (
+                    <div key={key}>
+                        <Typography variant={"body2"}>{key + ' - ' + c.msg}</Typography>
+                        <Button
+                            variant={"outlined"}
+                            size={"small"} onClick={() => console.log(c.name, dispatch)}>close</Button>
+                    </div>
+                ))}
+            </Grid>
+            <Grid item>
                 <Button
                     variant={"outlined"}
                     size={"small"}
@@ -105,10 +108,6 @@ const MainWindow: React.FC = () => {
                     <Button
                         variant={"outlined"}
                         size={"small"} onClick={() => createChildWindows()}>Create Child Windows</Button>
-                    <Button
-                        variant={"outlined"}
-                        size={"small"} onClick={() => setIsChildWindowListOpen(!isChildWindowListOpen)}>Open Child
-                        Window list</Button>
                 </Grid>
                 <Grid item>
                     <Button
@@ -117,7 +116,6 @@ const MainWindow: React.FC = () => {
                 </Grid>
             </Grid>
             <Grid container>
-
                 <strong>Count:</strong> {localCount}
             </Grid>
         </Grid>

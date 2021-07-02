@@ -24,20 +24,19 @@ const ChildWindow: React.FC = () => {
                 const service = new MarketDataService()
                 await service.registerUser(user)
                 await service.start(setResponse)
-
             }
         }
 
-        if (!connected && user) {
+        if (!connected && user && client) {
             startMarketData()
         }
-    }, [connected, user])
+    }, [connected, user, client])
 
     useEffect(() => {
         const addClientToList = async () => {
             await client.dispatch("addClientToList", client)
         }
-
+debugger
         if (client) {
             addClientToList()
         }

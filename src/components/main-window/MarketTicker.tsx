@@ -24,7 +24,7 @@ const MarketTicker = ({message, instruments}: MarketTickerProps) => {
             }
         }
     }, [currency, price, message])
-debugger
+
     return (
         <>
             {price ? <Grid item style={{display: 'flex', minWidth: '15em',  justifyContent: 'center', alignItems: 'center', backgroundColor: instruments?.map(i => i.code).filter(i => i === currency)[0] ? 'green' : 'red'}}>

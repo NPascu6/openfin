@@ -29,7 +29,6 @@ const ChildWindow: React.FC = () => {
     useEffect(() => {
         const startMarketData = async () => {
             if (user && !connected && instruments) {
-                debugger
                 setConnected(true)
                 const service = new MarketDataService()
                 await service.registerUser(user)

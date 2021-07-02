@@ -57,6 +57,10 @@ export class MarketDataService extends HubService {
         return MarketDataService.instance;
     }
 
+    public watcher(message: any) {
+
+    }
+
     public async start(mutateMessage: any): Promise<HubConnectionState> {
         await this.stop();
 

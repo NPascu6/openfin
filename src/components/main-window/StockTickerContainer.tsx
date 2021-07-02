@@ -6,13 +6,22 @@ import {fetchOtcInstruments} from "../../redux/thunks/instrument";
 import Marquee from "react-fast-marquee";
 import {Divider} from "@material-ui/core";
 import MarketTicker from "./MarketTicker";
+import {useDebounce} from "react-use";
 
 function StockTicker() {
     const dispatch = useDispatch()
     const [connected, setConnected] = useState(false)
     const [response, setResponse] = useState<any>()
+    const [newResponse, setNewResponse] = useState<any>()
     const {user} = useSelector((state: RootState) => state.app);
     const {instruments, selectedInstruments} = useSelector((state: RootState) => state.instrument);
+
+    useDebounce(() => {
+        debugger
+        if(response){
+            setNewResponse(response)
+        }
+    }, 100, [response])
 
     useEffect(() => {
         const startMarketData = async () => {
@@ -32,22 +41,21 @@ function StockTicker() {
 
 
     useEffect(() => {
-        if (!instruments)
+        if (!instruments && user)
             dispatch(fetchOtcInstruments());
-    }, [dispatch, instruments])
-
+    }, [dispatch, instruments, user])
 
     return (
         <>
             <Marquee gradient={false} style={{display: 'flex', maxHeight: '2em', overflow: 'hidden'}}>
                 {
-                    response && instruments && instruments.filter(c => c.quoteCurrencyCode === 'USD').map(i => i.code).map((i, index) => (
+                    newResponse && instruments && instruments.filter(c => c.quoteCurrencyCode === 'USD').map(i => i.code).map((i, index) => (
                         <MarketTicker
                             instruments={selectedInstruments ?? []}
                             key={index}
                             message={{
                                 currency: i,
-                                price: response.data.instrumentCode === i ? response.data.last : 0
+                                price: newResponse.data.instrumentCode === i ? newResponse.data.last : 0
                             }}/>
                     ))
                 }

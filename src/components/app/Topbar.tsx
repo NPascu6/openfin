@@ -87,7 +87,7 @@ const Topbar = () => {
 
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, "appBar")}>
-            <Grid container alignItems={"center"} style={{height: '10vh'}}>
+            <Grid container alignItems={"center"} style={{minHeight: '2em', maxHeight: '2em'}}>
                 <div className={classes.title}>
                     <Typography variant="body1" color="inherit" noWrap
                                 style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
@@ -120,7 +120,7 @@ const Topbar = () => {
                     <CloseIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>
             </Grid>
-            <Grid container alignItems={"center"} style={{height: '10vh'}}>
+            <Grid container alignItems={"center"} style={{minHeight: '2em', maxHeight: '2em'}}>
                 <StockTicker/>
             </Grid>
         </AppBar>

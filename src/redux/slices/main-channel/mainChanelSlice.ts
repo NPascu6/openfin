@@ -52,7 +52,6 @@ const channelSlice = createSlice({
             }
         },
         onConnection: function (state,action: PayloadAction<any>) {
-            debugger
             const { statuses } = state;
             const { identity } = action.payload;
             return {

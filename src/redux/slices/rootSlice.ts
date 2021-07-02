@@ -3,6 +3,7 @@ import {persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import appReducer from "./app/appSlice";
 import mainChannelReducer from "./main-channel/mainChanelSlice";
+import instrumentReducer from "./instrument/instrumentSlice";
 
 const appPersistConfig = {
     key: 'app',
@@ -17,6 +18,7 @@ const channelPersistConfig = {
 const rootSlice = combineReducers({
     app: persistReducer(appPersistConfig, appReducer),
     mainChannel: persistReducer(channelPersistConfig, mainChannelReducer),
+    instrument: instrumentReducer,
 });
 
 export type RootState = ReturnType<typeof rootSlice>;

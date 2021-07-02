@@ -21,13 +21,14 @@ import LinkIcon from '@material-ui/icons/Link';
 import {useLocation} from "react-use";
 import {useDocked, useMaximized} from "openfin-react-hooks";
 import {FullscreenSharp} from "@material-ui/icons";
+import StockTicker from "../main-window/StockTickerContainer";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         toolbar: {
             paddingRight: 5,
-            height: '2em',
-            minHeight: '2em',
+            minHeight: '4em',
+            maxHeight: '4em'
         },
         appBar: {
             backgroundColor: theme.palette.background.default,
@@ -36,8 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
             }),
-            height: '2em',
-            maxHeight: '2em'
+            maxHeight: '4em'
         },
         title: {
             '-webkit-app-region': 'drag',
@@ -45,8 +45,8 @@ const useStyles = makeStyles((theme: Theme) =>
             cursor: "pointer"
         },
         appBarSpacer: {
-            height: '2em',
-            minHeight: '2em',
+            minHeight: '4em',
+            maxHeight: '4em',
             border: '1px solid black'
         },
 
@@ -87,11 +87,11 @@ const Topbar = () => {
 
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, "appBar")}>
-            <Grid container alignItems={"center"} style={{height: '15vh'}}>
+            <Grid container alignItems={"center"} style={{height: '10vh'}}>
                 <div className={classes.title}>
                     <Typography variant="body1" color="inherit" noWrap
                                 style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
-                        {"React openfin app :: Covario"}
+                        {"COVARIO"}
                     </Typography>
                 </div>
                 {location.pathname === '/' && <Grid item
@@ -119,6 +119,9 @@ const Topbar = () => {
                 <IconButton className="header-icon" onClick={onCloseClick} title="Close">
                     <CloseIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>
+            </Grid>
+            <Grid container alignItems={"center"} style={{height: '10vh'}}>
+                <StockTicker/>
             </Grid>
         </AppBar>
     );

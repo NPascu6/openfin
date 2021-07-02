@@ -5,13 +5,15 @@ import React, {useEffect, useState} from "react";
 import Prism from "prismjs";
 import {clearClients,} from "../../redux/slices/main-channel/mainChanelSlice";
 import {Button, Grid, Typography} from "@material-ui/core";
-import {createInitialWindows, mainWindowActions} from "./mainWindowActions";
+import {createInitialWindows, mainWindowActions} from "./main-window-chanel/mainWindowActions";
 import {closeChildWindows} from "../../common/utils";
 import AuthService from "../../services/auth/AuthService";
 import {setUser, setUserProfile} from "../../redux/slices/app/appSlice";
 import {Identity} from "openfin/_v2/identity";
+import StockTicker from "../../components/main-window/StockTickerContainer";
+import InstrumentList from "../../components/main-window/InstrumentList";
 
-const CHANNEL_NAME = "test";
+const CHANNEL_NAME = "MainChanel";
 
 const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
@@ -92,7 +94,10 @@ const MainWindow: React.FC = () => {
 
     return (
         <Grid container>
-            <Grid item>
+            <Grid container>
+                <InstrumentList />
+            </Grid>
+            <Grid container>
                 {statuses && statuses.map((c, key) => (
                     <div key={key}>
                         <Typography variant={"body2"}>{key + ' - ' + c.msg}</Typography>
@@ -102,7 +107,7 @@ const MainWindow: React.FC = () => {
                     </div>
                 ))}
             </Grid>
-            <Grid item>
+            <Grid container>
                 <Button
                     variant={"outlined"}
                     size={"small"}

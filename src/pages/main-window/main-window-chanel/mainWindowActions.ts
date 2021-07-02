@@ -4,10 +4,10 @@ import {
     decrement,
     increment,
     setWindow
-} from "../../redux/slices/main-channel/mainChanelSlice";
+} from "../../../redux/slices/main-channel/mainChanelSlice";
 import {IChannelAction} from "openfin-react-hooks";
 import {Dispatch} from "react";
-import {getWindowConfig1} from "../../common/utils";
+import {getWindowConfig1} from "../../../common/utils";
 
 export const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any: any) => any, setNumberOfChildWindows: (any: any) => any) => {
     switch (numberOfChildWindows) {

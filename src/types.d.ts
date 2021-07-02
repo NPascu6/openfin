@@ -5,3 +5,5 @@ interface IDemoCard {
     icon: string;
     iconRotate: boolean;
 }
+
+declare module "react-advanced-news-ticker"

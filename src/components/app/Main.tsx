@@ -15,9 +15,8 @@ const useStyles = makeStyles((theme: Theme) =>
             border: '1px solid black'
         },
         appBarSpacer: {
-            height: '2em',
-            minHeight: '2em',
-            border: '1px solid black'
+            height: '4em',
+            minHeight: '4em'
         },
         content: {
             flex: 1,

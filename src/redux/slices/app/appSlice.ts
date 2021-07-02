@@ -26,7 +26,7 @@ export interface MainState {
 }
 
 const initialState: MainState = {
-    topbarTitle: {title: "React Openfin App"},
+    topbarTitle: {title: ""},
     isAppReady: false,
     isDarkTheme: false,
     isSignoutOpen: false,

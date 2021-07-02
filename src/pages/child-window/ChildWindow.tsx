@@ -7,32 +7,41 @@ import {Grid} from "@material-ui/core";
 import {store} from "../../redux/store";
 import {MarketDataService} from "../../services/marketdata/MarketDataService";
 import {setIsDarkTheme} from "../../redux/slices/app/appSlice";
+import {fetchOtcInstruments} from "../../redux/thunks/instrument";
 
-const CHANNEL_NAME = "test";
+const CHANNEL_NAME = "MainChanel";
 
 const ChildWindow: React.FC = () => {
     const dispatch = useDispatch()
     const {client} = useChannelClient(CHANNEL_NAME);
     const {user} = useSelector((state: RootState) => state.app);
     const {childWindows} = useSelector((state: RootState) => state.mainChannel);
+    const {instruments} = useSelector((state: RootState) => state.instrument);
     const [connected, setConnected] = useState(false)
     const [, setResponse] = useState()
 
     useEffect(() => {
+        if (!instruments) {
+            dispatch(fetchOtcInstruments())
+        }
+    }, [instruments, dispatch])
+
+    useEffect(() => {
         const startMarketData = async () => {
-            if (user && !connected) {
+            if (user && !connected && instruments) {
                 debugger
                 setConnected(true)
                 const service = new MarketDataService()
                 await service.registerUser(user)
                 await service.start(setResponse)
+                service.subscribeTicker(['BTC-USD', 'ETH-USD', 'BTC-ETH']?.map(c => c))
             }
         }
 
-        if (!connected && user && client) {
+        if (!connected && user && client && instruments) {
             startMarketData()
         }
-    }, [connected, user, client])
+    }, [connected, user, client, instruments])
 
     useEffect(() => {
         const addClientToList = async () => {

@@ -16,7 +16,7 @@ const dispatchAppProps = async (dispatch: AppDispatch, user: User) => {
 const initAuthService = async (dispatch: AppDispatch) => {
     const authService = AuthService;
     const authServiceEvents = authService.userManager.events;
-debugger
+
     authServiceEvents.addUserSignedOut(async () => {
         await AuthService.startSigninMainWindow();
     });

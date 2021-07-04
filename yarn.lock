@@ -1749,21 +1749,6 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@popmotion/easing@^1.0.1", "@popmotion/easing@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@popmotion/easing/-/easing-1.0.2.tgz#17d925c45b4bf44189e5a38038d149df42d8c0b4"
-  integrity sha512-IkdW0TNmRnWTeWI7aGQIVDbKXPWHVEYdGgd5ZR4SH/Ty/61p63jCjrPxX1XrR7IGkl08bjhJROStD7j+RKgoIw==
-
-"@popmotion/popcorn@^0.3.6":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@popmotion/popcorn/-/popcorn-0.3.9.tgz#082efb256776fbea2c2b75dfa4d5bdd2f1498ad6"
-  integrity sha512-pDUjY0M6Hf9Gn1+AeLwS/Mtk6Gl8bov9mm1GU5dk3ks6jN0nKThA4Shb6MOqLZwgt9zdPsf2ihxiuecvlVAkFg==
-  dependencies:
-    "@popmotion/easing" "^1.0.1"
-    framesync "^4.0.1"
-    hey-listen "^1.0.8"
-    style-value-types "^3.1.3"
-
 "@reduxjs/toolkit@^1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.6.0.tgz#0a17c6941c57341f8b31e982352b495ab69d5add"
@@ -2121,13 +2106,6 @@
     "@types/domutils" "*"
     "@types/node" "*"
     domhandler "^2.4.0"
-
-"@types/http-proxy@^1.17.5":
-  version "1.17.6"
-  resolved "https://registry.yarnpkg.com/@types/http-proxy/-/http-proxy-1.17.6.tgz#62dc3fade227d6ac2862c8f19ee0da9da9fd8616"
-  integrity sha512-+qsjqR75S/ib0ig0R9WN+CDoZeOBU6F2XLewgC4KVgdXiNHiKKHFEMRHOrs5PbYE97D5vataw5wPj4KLYfUkuQ==
-  dependencies:
-    "@types/node" "*"
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
@@ -2928,11 +2906,6 @@ aproba@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
   integrity sha512-Y9J6ZjXtoYh8RnXVCMOU/ttDmk1aBjunq9vO0ta5x85WDQiQfUF9sIPBITdbiiIVcBo03Hi3jMxigBtsddlXRw==
-
-are-passive-events-supported@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/are-passive-events-supported/-/are-passive-events-supported-1.1.1.tgz#3db180a1753a2186a2de50a32cded3ac0979f5dc"
-  integrity sha512-5wnvlvB/dTbfrCvJ027Y4L4gW/6Mwoy1uFSavney0YO++GU+0e/flnjiBBwH+1kh7xNCgCOGvmJC3s32joYbww==
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -3789,145 +3762,6 @@ call-bind@^1.0.0, call-bind@^1.0.2:
     function-bind "^1.1.1"
     get-intrinsic "^1.0.2"
 
-callbag-animation-frames@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/callbag-animation-frames/-/callbag-animation-frames-2.1.0.tgz#a0662543268af99f44893e4fd93eb034accc3db3"
-  integrity sha512-mRvpE47uySluq2ioOVMY1fqS//6bxuiok8hNEMdPwa2JPYBJIQxkdpTpOXuAzyfxd+U1Yysp3I37PrnaH0ziPg==
-  dependencies:
-    callbag "^1.1.0"
-    callbag-share "^1.1.1"
-
-callbag-concat-with@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/callbag-concat-with/-/callbag-concat-with-1.2.0.tgz#35638f042debf92373e5d953c9301ae7137433bc"
-  integrity sha512-F2BHaSHMdKHsdQ01dtgUzcGWOEzE5MxpneN5TVlcVleVZb3BUnTcIuI40mLdd8xfYAADYhDGk+SaoRsq8VH1Kw==
-  dependencies:
-    callbag "^1.1.0"
-    callbag-concat "^1.2.0"
-    callbag-of "^2.0.0"
-
-callbag-concat@^1.2.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/callbag-concat/-/callbag-concat-1.2.1.tgz#3b10bcc5a7cbbcba3bdf1c46136e5d16f36291bd"
-  integrity sha512-iIC4FCUF7sKnt4gDKHNjMRHekebdaA1/udjON/mCLg31EzzTO/dE9nfxpcj+G/63KopFXVQdZKQDsu7UOYGpPg==
-  dependencies:
-    callbag "^1.2.0"
-
-callbag-defer@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/callbag-defer/-/callbag-defer-1.1.0.tgz#2e03f1217f8b8e60ce2279b88f92edf517fda792"
-  integrity sha512-hRW/2CiLZjaKy5IOT1htcZOgwQut+E2gwjVRXDdoLgTrzce9WNK5PUmNhG/oZDEo2DFASiKU3tPBJ6A4iDzjXQ==
-  dependencies:
-    callbag "^1.2.0"
-    callbag-flatten "^1.4.0"
-    callbag-lazy "^2.0.1"
-
-callbag-duration-progress@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/callbag-duration-progress/-/callbag-duration-progress-2.0.0.tgz#d91cf76859be4ae71dd6b3ae8300e4b498a4e52a"
-  integrity sha512-DqgzOXYttMYBTSv1KJmK6RROqxjUH00k+2eCoBfpk3nFF6ABHvr5QdvE4hJgH7eoG4psuoBvuKgGXYt3fU1QBg==
-  dependencies:
-    callbag "^1.2.0"
-    callbag-concat-with "^1.2.0"
-    callbag-map "^1.1.0"
-    callbag-ms-elapsed "^2.0.1"
-    callbag-take-while "^2.0.0"
-
-callbag-flatten@^1.4.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/callbag-flatten/-/callbag-flatten-1.7.0.tgz#5edb7c0b59f8eafdcb3e5ffb34505ace423fa6e2"
-  integrity sha512-1nekVS5GwI38CRcIzmLFRFmXeoHkLG/SkUAwwvarwL4srmHW994UzFAcwwQbZjI9gudqfVDvY+LnopNb4Dtc4w==
-  dependencies:
-    callbag "^1.1.0"
-
-callbag-from-event@^1.2.1:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/callbag-from-event/-/callbag-from-event-1.3.0.tgz#59c005677bca8787ff6f21811d50158fc636067e"
-  integrity sha512-cAu82hKKFmMtKTmd50p/nlMfs1oKz+PGUZmmwhbzPbw4YtjNgTKg6pXjpcQprhBQdrqg/v8pHcAS8Qs6X7r8fw==
-  dependencies:
-    callbag "^1.1.0"
-
-callbag-lazy@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/callbag-lazy/-/callbag-lazy-2.0.2.tgz#8308f96dee0fa928415b157958f54d7ee87aca76"
-  integrity sha512-UJ/Rcq+p9Pi5t8lJx9U2CrK3j6UPZXzlM3P2DiroPZ1MTfWKBx/+GbmDWBnYfGkmzxAsdKCn4S5Ek0xbZUjR5g==
-  dependencies:
-    callbag "1.2.0"
-
-callbag-map@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/callbag-map/-/callbag-map-1.1.0.tgz#6ddd28a3f634fbd2394ef136a181b4ba5e3b062c"
-  integrity sha512-/xFzvJCtx1xulZpFeI4wq+ZD7tkg417XOeJ3wS9v8bHLLpt+fHKXgbZ8TBnnIxywJN6Uu/ZhL+c1DzUG6KXYFQ==
-  dependencies:
-    callbag "^1.1.0"
-
-callbag-merge@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/callbag-merge/-/callbag-merge-3.2.2.tgz#87e4a9705dfcea109908296397834d648e8ea435"
-  integrity sha512-VeBE5Mh7LUxYwxaITKsHt3CmZeMMfpsjEamMD0Wf6ajrFE6FGa4aQnd7SZ5h0KSSTcivxe0UaT6x97f8Y9atzA==
-  dependencies:
-    callbag "^1.2.0"
-
-callbag-ms-elapsed@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/callbag-ms-elapsed/-/callbag-ms-elapsed-2.0.1.tgz#5ad525dfb7daafe55b12631ba30beab7ecbc80f0"
-  integrity sha512-d8AVcahgd+YyRgoZwp6hkGkcao3kJQXwRBWze00s3ZTi9ma1/c3xiEqwObWsHa34RO4zEmPBEtPPtT8hutlnrQ==
-  dependencies:
-    callbag "^1.2.0"
-    callbag-animation-frames "^2.1.0"
-    callbag-defer "^1.1.0"
-    callbag-map "^1.1.0"
-
-callbag-of@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/callbag-of/-/callbag-of-2.0.1.tgz#9bc1e884550549afa07d2761bfeb624d9f18da2b"
-  integrity sha512-Lox6qcByTeqeFKtiOPAoWueKUbqT+X9DdSZKJwzshKJAkWmP5qPnO7z2HDzIfWkv3uY7z6WZ9ZMGjdbO3BOfpw==
-  dependencies:
-    callbag "^1.4.0"
-
-callbag-share@^1.1.1:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/callbag-share/-/callbag-share-1.3.0.tgz#4284f7c13f83b0888b246c13fa099ef6ce7c4e45"
-  integrity sha512-KqM16UzlvK3DcYRsT6Myabm4GqvsMQIoGLWmawVVoMAw3534O0XCa+6Sai0mjFKenC3tqTacyChlusoZoZmdsg==
-  dependencies:
-    callbag "^1.1.0"
-
-callbag-subject@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/callbag-subject/-/callbag-subject-1.0.2.tgz#63923185000bcb10ec12d03491102aa43df93080"
-  integrity sha512-pMIKoXxJdO6SypymWQyLJHW/idY0esgT68I6xjYQjGZch0IVPlM5Bd+YSJaQ17fGLJEvK3HsaRaDuU8nmAqWOQ==
-
-callbag-subscribe@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/callbag-subscribe/-/callbag-subscribe-1.5.1.tgz#1ecf12b1f041a6ae84bd071cbbaf8014eed2acc5"
-  integrity sha512-CRj2jKfcRvG8gap2ehsm/NxZVAjnwUApI+0ZY3bu6nyFfhhOzH+4RWpB/4RSJUZNN3ZILdSgAKQiUov/7ov9BQ==
-  dependencies:
-    callbag "^1.2.0"
-
-callbag-take-until@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/callbag-take-until/-/callbag-take-until-3.0.1.tgz#bf22a8b75f5336fe4a32a263ce450d678868fd28"
-  integrity sha512-jwp6lARI2m7gwu5lfSAT4UasoVkFU2r4eRSMvu8b0us7X5dhfzdiBnwOCljTcaKQVytiQKPLfve53FgWKdIHvQ==
-  dependencies:
-    callbag "1.2.0"
-
-callbag-take-while@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/callbag-take-while/-/callbag-take-while-2.0.0.tgz#2b6e4a69fab13862b9a067c01c9441ec66b1fc80"
-  integrity sha512-c6nnV14Xh/QEzkD6dgFSitMs0moh4ejF0zSf5SyHxNZdOjJtO+B9G9FKH7GCKPI9q485sjJ51/WcZLCloY1RdA==
-  dependencies:
-    callbag "^1.1.0"
-
-callbag@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/callbag/-/callbag-1.2.0.tgz#45e73962a466056c6e5f86f5627b35cf0c4df101"
-  integrity sha512-RMcVOk2oyA8CyCt/HsLEvnvvttKlaGVaG0uOo5IY7RpdiPLhStjxv5oYre33VJfT8kJE+cuKLSNHooz7yCUdhQ==
-
-callbag@^1.1.0, callbag@^1.2.0, callbag@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/callbag/-/callbag-1.4.0.tgz#bde2302fee388ddae2ae743ca159b4851c064291"
-  integrity sha512-C6KRhRbEddJ89vClBBR9Hd10DXv3J5ulKmJ+SRjn+eNup8imZ+sxG3QkWJ3IEljpHfVxo/6IcRnXuQE2GQmmXA==
-
 caller-callsite@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/caller-callsite/-/caller-callsite-2.0.0.tgz#847e0fce0a223750a9a027c54b33731ad3154134"
@@ -4155,7 +3989,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.3.1:
+classnames@^2.2.6, classnames@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
   integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
@@ -6532,13 +6366,6 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framesync@^4.0.1:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/framesync/-/framesync-4.1.0.tgz#69a8db3ca432dc70d6a76ba882684a1497ef068a"
-  integrity sha512-MmgZ4wCoeVxNbx2xp5hN/zPDCbLSKiDt4BbbslK7j/pM2lg5S0vhTNv1v8BCVb99JPIo6hXBFdwzU7Q4qcAaoQ==
-  dependencies:
-    hey-listen "^1.0.5"
-
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
@@ -7437,11 +7264,6 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-hey-listen@^1.0.5, hey-listen@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/hey-listen/-/hey-listen-1.0.8.tgz#8e59561ff724908de1aa924ed6ecc84a56a9aa68"
-  integrity sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==
-
 history@^4.9.0:
   version "4.10.1"
   resolved "https://registry.yarnpkg.com/history/-/history-4.10.1.tgz#33371a65e3a83b267434e2b3f3b1b4c58aad4cf3"
@@ -7633,18 +7455,7 @@ http-proxy-middleware@0.19.1:
     lodash "^4.17.11"
     micromatch "^3.1.10"
 
-http-proxy-middleware@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/http-proxy-middleware/-/http-proxy-middleware-2.0.1.tgz#7ef3417a479fb7666a571e09966c66a39bd2c15f"
-  integrity sha512-cfaXRVoZxSed/BmkA7SwBVNI9Kj7HFltaE5rqYOub5kWzWZ+gofV2koVN1j2rMW7pEfSSlCHGJ31xmuyFyfLOg==
-  dependencies:
-    "@types/http-proxy" "^1.17.5"
-    http-proxy "^1.18.1"
-    is-glob "^4.0.1"
-    is-plain-obj "^3.0.0"
-    micromatch "^4.0.2"
-
-http-proxy@^1.17.0, http-proxy@^1.18.1:
+http-proxy@^1.17.0:
   version "1.18.1"
   resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.18.1.tgz#401541f0534884bbf95260334e72f88ee3976549"
   integrity sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==
@@ -8200,11 +8011,6 @@ is-plain-obj@^1.0.0, is-plain-obj@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-1.1.0.tgz#71a50c8429dfca773c92a390a4a03b39fcd51d3e"
   integrity sha1-caUMhCnfync8kqOQpKA7OfzVHT4=
-
-is-plain-obj@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-3.0.0.tgz#af6f2ea14ac5a646183a5bbdb5baabbc156ad9d7"
-  integrity sha512-gwsOE28k+23GP1B6vFl1oVh/WOzmawBrKwo5Ev6wMKzPkaXaCDIQKzLnvsA42DRlbVTWorkgTKIviAKCWkfUwA==
 
 is-plain-object@^2.0.3, is-plain-object@^2.0.4:
   version "2.0.4"
@@ -12008,6 +11814,11 @@ react-simple-marquee@^1.2.2:
     prop-types "^15.7.2"
     react "^16.13.1"
 
+react-smooth-marquee@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-smooth-marquee/-/react-smooth-marquee-1.0.0.tgz#b29f8eb7b2fc9fea71ae9ebddb04d42b6e675670"
+  integrity sha1-sp+Ot7L8n+pxrp692wTUK25nVnA=
+
 react-ticker@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/react-ticker/-/react-ticker-1.2.2.tgz#12cda5ff8266c6fe90ffcd8c58e12ba1596ddf24"
@@ -12048,7 +11859,7 @@ react-use@^17.2.4:
     ts-easing "^0.2.0"
     tslib "^2.1.0"
 
-react@^16.13.1:
+react@^16.12.0, react@^16.13.1:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
@@ -13045,6 +12856,14 @@ signum@^1.0.0:
   resolved "https://registry.yarnpkg.com/signum/-/signum-1.0.0.tgz#74a7d2bf2a20b40eba16a92b152124f1d559fa77"
   integrity sha1-dKfSvyogtA66FqkrFSEk8dVZ+nc=
 
+simple-marquee@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/simple-marquee/-/simple-marquee-0.0.3.tgz#1d37b9f8e941d613eb38faf8361e6bc9c543278b"
+  integrity sha512-Af1aL5A60o37+KGjbSNrmQRGLgRx41TSTJZmpXSLDfeCojtHQDQmCsL6i4apiWqOeglqiQ92pEDV9zgmqjexkA==
+  dependencies:
+    classnames "^2.2.6"
+    react "^16.12.0"
+
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
@@ -13628,14 +13447,6 @@ style-loader@1.3.0:
     loader-utils "^2.0.0"
     schema-utils "^2.7.0"
 
-style-value-types@^3.1.3:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-3.2.0.tgz#eb89cab1340823fa7876f3e289d29d99c92111bb"
-  integrity sha512-ih0mGsrYYmVvdDi++/66O6BaQPRPRMQHoZevNNdMMcPlP/cH28Rnfsqf1UEba/Bwfuw9T8BmIMwbGdzsPwQKrQ==
-  dependencies:
-    hey-listen "^1.0.8"
-    tslib "^1.10.0"
-
 styled-components@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-5.3.0.tgz#e47c3d3e9ddfff539f118a3dd0fd4f8f4fb25727"
@@ -14127,7 +13938,7 @@ tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^1.10.0, tslib@^1.8.1:
+tslib@^1.8.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
@@ -14428,30 +14239,6 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
-
-use-constant@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/use-constant/-/use-constant-1.1.0.tgz#76d36a0edf16d4cc8565361f522b55da5f8f3f22"
-  integrity sha512-yrflEfv7Xv/W8WlYV6nwRH01K+2BpR4cWxuzY03yPRjYZuHixhGlvnJN5O2bRYrXGpJ4zy8QjFABGIQ2QXeBOA==
-
-use-smooth-scroll@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/use-smooth-scroll/-/use-smooth-scroll-1.1.1.tgz#07122f99f0276426de282b4365e28bb237361966"
-  integrity sha512-maH0kZgNi8SEXsJBH6lF/JyojhA8K6ogWTnpHuMWbscoBMsLz2HfyT7n+PxJKD7dFBx+6yOw0A3hYmIDpKptxw==
-  dependencies:
-    "@popmotion/easing" "^1.0.2"
-    "@popmotion/popcorn" "^0.3.6"
-    are-passive-events-supported "^1.1.1"
-    callbag-duration-progress "^2.0.0"
-    callbag-flatten "^1.4.0"
-    callbag-from-event "^1.2.1"
-    callbag-map "^1.1.0"
-    callbag-merge "^3.2.2"
-    callbag-of "^2.0.0"
-    callbag-subject "^1.0.2"
-    callbag-subscribe "^1.5.1"
-    callbag-take-until "^3.0.0"
-    use-constant "^1.0.0"
 
 use@^3.1.0:
   version "3.1.1"

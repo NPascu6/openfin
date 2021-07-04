@@ -22,22 +22,23 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function InstrumentList() {
     const classes = useStyles();
     const dispatch = useDispatch()
-    const [checked, setChecked] = React.useState([1]);
+    const [checked, setChecked] = React.useState<string[]>([]);
     const {instruments} = useSelector((state: RootState) => state.instrument);
 
-    const handleToggle = (value: number) => () => {
+    const handleToggle = (value: any) => () => {
         const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
+        const newChecked = checked.length > 0 ? [...checked] : [];
+debugger
         if (currentIndex === -1) {
+            if (newChecked[0] === value)
+                newChecked.splice(0, 1);
             newChecked.push(value);
         } else {
             newChecked.splice(currentIndex, 1);
         }
 
         setChecked(newChecked);
-
-        dispatch(setSelectedInstruments(checked))
+        dispatch(setSelectedInstruments(newChecked))
     };
 
     return (

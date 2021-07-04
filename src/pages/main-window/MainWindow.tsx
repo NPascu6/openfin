@@ -14,11 +14,30 @@ import InstrumentList from "../../components/main-window/InstrumentList";
 
 const CHANNEL_NAME = "MainChanel";
 
+
+const Counter = () => {
+    const {count} = useSelector((state: RootState) => state.mainChannel);
+
+    const [localCount, setLocalCount] = useState<number>()
+
+    useEffect(() => {
+        if(count){
+            setLocalCount(count)
+        }
+    }, [count])
+
+    return (
+        <div>
+            {localCount}
+        </div>
+    )
+}
+
 const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
     const {isDarkTheme} = useSelector((state: RootState) => state.app);
-    const {childWindows, count, statuses} = useSelector((state: RootState) => state.mainChannel);
-    const [localCount, setLocalCount] = useState<number>(0)
+    const {childWindows, statuses} = useSelector((state: RootState) => state.mainChannel);
+    const {selectedInstruments} = useSelector((state: RootState) => state.instrument);
     const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
 
     const handleCloseAll = () => {
@@ -77,12 +96,6 @@ const MainWindow: React.FC = () => {
     }, [provider, dispatch]);
 
     useEffect(() => {
-        if (count) {
-            setLocalCount(count)
-        }
-    }, [count])
-
-    useEffect(() => {
         if (isDarkTheme && provider) {
             provider.publish("setTheme", isDarkTheme)
         }
@@ -91,11 +104,17 @@ const MainWindow: React.FC = () => {
         }
     }, [isDarkTheme, provider])
 
+    useEffect(() => {
+        if (selectedInstruments && provider) {
+            provider.publish("setSelectedInstruments", selectedInstruments)
+        }
+        if (!selectedInstruments && provider) {
+            provider.publish("setSelectedInstruments", selectedInstruments)
+        }
+    }, [selectedInstruments, provider])
+
     return (
         <Grid container>
-            <Grid container>
-                <InstrumentList />
-            </Grid>
             <Grid container>
                 {statuses && statuses.map((c, key) => (
                     <div key={key}>
@@ -128,7 +147,7 @@ const MainWindow: React.FC = () => {
                 </Grid>
             </Grid>
             <Grid container>
-                <strong>Count:</strong> {localCount}
+                <Counter/>
             </Grid>
             <h4>Send a message to client(s)</h4>
             <button
@@ -137,8 +156,9 @@ const MainWindow: React.FC = () => {
             >
                 Set Theme
             </button>
+            <InstrumentList/>
         </Grid>
     );
 }
 
-export default MainWindow;
+export default React.memo(MainWindow);

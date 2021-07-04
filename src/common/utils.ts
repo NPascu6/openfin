@@ -88,6 +88,6 @@ export const closeWindowRemote = (name: string, dispatch: Dispatch<any>) => {
 export const numberFormatter = new Intl.NumberFormat(getBrowserLocale(), {maximumFractionDigits: 6});
 export const cryptoNumberFormatter = new Intl.NumberFormat(getBrowserLocale(), {maximumFractionDigits: 6});
 export const fiatNumberFormatter = new Intl.NumberFormat(getBrowserLocale(), {
-    maximumFractionDigits: 4,
+    maximumFractionDigits: 6,
     minimumFractionDigits: 2,
 });

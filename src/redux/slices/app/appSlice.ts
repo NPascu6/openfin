@@ -23,6 +23,7 @@ export interface MainState {
     profile?: Profile | null;
     notification?: Notification
     user?: User | null;
+    totpbarResponse? : any
 }
 
 const initialState: MainState = {
@@ -58,6 +59,9 @@ const appSlice = createSlice({
         },
         setNotification(state, action: PayloadAction<Notification>) {
             state.notification = action.payload;
+        },
+        setTopBarResponse(state, action: PayloadAction<any>){
+            state.totpbarResponse = action.payload
         }
     },
 });
@@ -69,7 +73,8 @@ export const {
     setIsAppReady,
     setLocale,
     setUserProfile,
-    setNotification
+    setNotification,
+    setTopBarResponse
 } = appSlice.actions;
 
 export default appSlice.reducer;

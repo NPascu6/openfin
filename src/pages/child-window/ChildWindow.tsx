@@ -3,7 +3,7 @@ import React, {useEffect} from "react";
 import {Provider, useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/slices/rootSlice";
 import Topbar from "../../components/app/Topbar";
-import {Grid} from "@material-ui/core";
+import {Button, Grid} from "@material-ui/core";
 import {store} from "../../redux/store";
 import {setIsDarkTheme} from "../../redux/slices/app/appSlice";
 import {fetchOtcInstruments} from "../../redux/thunks/instrument";
@@ -40,13 +40,14 @@ const ChildWindow: React.FC = () => {
             <Topbar/>
             <Provider store={store}>
                 <Grid container>
-                    <button onClick={async () => await client.dispatch("increment")}>
+                    <Button variant={"outlined"} onClick={async () => await client.dispatch("increment")}>
                         Increment
-                    </button>
-                    <button onClick={async () => await client.dispatch("decrement")}>
+                    </Button>
+                    <Button variant={"outlined"} onClick={async () => await client.dispatch("decrement")}>
                         Decrement
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant={"outlined"}
                         onClick={async () =>
                             await client.dispatch("close", {
                                 windowName: window.fin.Window.getCurrentSync().identity.name,
@@ -55,7 +56,7 @@ const ChildWindow: React.FC = () => {
                         }
                     >
                         Close
-                    </button>
+                    </Button>
                 </Grid>
             </Provider>
         </Grid>

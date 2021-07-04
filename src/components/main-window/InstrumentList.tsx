@@ -28,7 +28,7 @@ export default function InstrumentList() {
     const handleToggle = (value: any) => () => {
         const currentIndex = checked.indexOf(value);
         const newChecked = checked.length > 0 ? [...checked] : [];
-debugger
+
         if (currentIndex === -1) {
             if (newChecked[0] === value)
                 newChecked.splice(0, 1);

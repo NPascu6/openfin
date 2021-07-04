@@ -23,7 +23,7 @@ export interface MainState {
     profile?: Profile | null;
     notification?: Notification
     user?: User | null;
-    totpbarResponse? : any
+    settingsOpen?: any
 }
 
 const initialState: MainState = {
@@ -45,9 +45,6 @@ const appSlice = createSlice({
         setIsDarkTheme(state, action: PayloadAction<boolean>) {
             state.isDarkTheme = action.payload;
         },
-        setIsSignoutOpen(state, action: PayloadAction<boolean>) {
-            state.isSignoutOpen = action.payload;
-        },
         setIsAppReady(state, action: PayloadAction<boolean>) {
             state.isAppReady = action.payload;
         },
@@ -57,24 +54,19 @@ const appSlice = createSlice({
         setUserProfile(state, action: PayloadAction<Profile | null>) {
             state.profile = action.payload;
         },
-        setNotification(state, action: PayloadAction<Notification>) {
-            state.notification = action.payload;
+        setSettingsOpen(state, action: PayloadAction<any>){
+            state.settingsOpen = action.payload
         },
-        setTopBarResponse(state, action: PayloadAction<any>){
-            state.totpbarResponse = action.payload
-        }
     },
 });
 
 export const {
     setUser,
     setIsDarkTheme,
-    setIsSignoutOpen,
     setIsAppReady,
     setLocale,
     setUserProfile,
-    setNotification,
-    setTopBarResponse
+    setSettingsOpen
 } = appSlice.actions;
 
 export default appSlice.reducer;

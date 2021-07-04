@@ -42,7 +42,6 @@ function StockTicker() {
         if (!instruments && user)
             dispatch(fetchOtcInstruments());
     }, [dispatch, instruments, user])
-console.log(selectedInstruments)
 
     return (
         <>

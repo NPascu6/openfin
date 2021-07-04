@@ -13,7 +13,7 @@ import BrightnessHighIcon from "@material-ui/icons/BrightnessHigh";
 import clsx from "clsx";
 import React, {useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setIsDarkTheme} from "../../redux/slices/app/appSlice";
+import {setIsDarkTheme, setSettingsOpen} from "../../redux/slices/app/appSlice";
 import {RootState} from "../../redux/slices/rootSlice";
 import MinimizeIcon from '@material-ui/icons/Minimize';
 import CloseIcon from '@material-ui/icons/Close';
@@ -21,7 +21,9 @@ import LinkIcon from '@material-ui/icons/Link';
 import {useLocation} from "react-use";
 import {useDocked, useMaximized} from "openfin-react-hooks";
 import {FullscreenSharp} from "@material-ui/icons";
+import SettingsIcon from '@material-ui/icons/Settings';
 import StockTicker from "../main-window/StockTickerContainer";
+import Settings from "./Settings";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -85,6 +87,10 @@ const Topbar = () => {
         }
     }
 
+    const openSettings = () => {
+        dispatch(setSettingsOpen(true))
+    }
+
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, "appBar")}>
             <Grid container alignItems={"center"} style={{minHeight: '2em', maxHeight: '2em'}}>
@@ -110,6 +116,9 @@ const Topbar = () => {
                 >
                     <LinkIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>}
+                <IconButton className="header-icon" onClick={openSettings} title="Minimize">
+                    <SettingsIcon style={{color: theme.palette.text.secondary}}/>
+                </IconButton>
                 <IconButton className="header-icon" onClick={onMinimizeClick} title="Minimize">
                     <MinimizeIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>
@@ -123,6 +132,7 @@ const Topbar = () => {
             <Grid container alignItems={"center"} style={{minHeight: '2em', maxHeight: '2em'}}>
                 <StockTicker/>
             </Grid>
+            <Settings/>
         </AppBar>
     );
 };

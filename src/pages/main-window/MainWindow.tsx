@@ -156,7 +156,6 @@ const MainWindow: React.FC = () => {
             >
                 Set Theme
             </button>
-            <InstrumentList/>
         </Grid>
     );
 }

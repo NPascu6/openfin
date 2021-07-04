@@ -64,7 +64,7 @@ const MarketTicker = ({message}: MarketTickerProps) => {
     }
 
     const getPercentageDifference = () => {
-        return (100 * ((price - open24) / open24)).toFixed(8)
+        return (100 * ((price - open24) / open24)).toFixed(4)
     }
 
     return (

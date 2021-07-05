@@ -10,7 +10,6 @@ import {closeChildWindows} from "../../common/utils";
 import AuthService from "../../services/auth/AuthService";
 import {setUser, setUserProfile} from "../../redux/slices/app/appSlice";
 import {Identity} from "openfin/_v2/identity";
-import InstrumentList from "../../components/main-window/InstrumentList";
 
 const CHANNEL_NAME = "MainChanel";
 

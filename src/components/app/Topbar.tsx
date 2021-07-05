@@ -116,9 +116,9 @@ const Topbar = () => {
                 >
                     <LinkIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>}
-                <IconButton className="header-icon" onClick={openSettings} title="Minimize">
+                { <IconButton className="header-icon" onClick={openSettings} title="Minimize">
                     <SettingsIcon style={{color: theme.palette.text.secondary}}/>
-                </IconButton>
+                </IconButton>}
                 <IconButton className="header-icon" onClick={onMinimizeClick} title="Minimize">
                     <MinimizeIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>

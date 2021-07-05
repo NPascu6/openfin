@@ -46,7 +46,7 @@ function StockTicker() {
     return (
         <>
             {response && selectedInstruments &&
-            <Marquee gradient={false}>
+            <Marquee gradient={false} speed={20}>
                 {response && selectedInstruments && selectedInstruments
                     .map(i => i.code).map((i, index) => (
                         <MarketTicker

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function InstrumentList() {
     const classes = useStyles();
     const dispatch = useDispatch()
-    const [checked, setChecked] = React.useState<string[]>([]);
-    const {instruments} = useSelector((state: RootState) => state.instrument);
+    const [checked, setChecked] = React.useState<any[]>([]);
+    const {instruments, selectedInstruments} = useSelector((state: RootState) => state.instrument);
 
     const handleToggle = (value: any) => () => {
         const currentIndex = checked.indexOf(value);
@@ -41,6 +41,15 @@ export default function InstrumentList() {
         dispatch(setSelectedInstruments(newChecked))
     };
 
+    useEffect(() => {
+        if (selectedInstruments) {
+            let newInstruments = [...selectedInstruments]
+            setChecked(newInstruments)
+        }
+    }, [selectedInstruments])
+
+
+
     return (
         <List dense className={classes.root}>
             {instruments?.map((value) => {
@@ -51,7 +60,7 @@ export default function InstrumentList() {
                             <Checkbox
                                 edge="end"
                                 onChange={handleToggle(value)}
-                                checked={checked.indexOf(value) !== -1}
+                                checked={checked.map(c => c.code).indexOf(value.code) !== -1}
                                 inputProps={{'aria-labelledby': labelId}}
                             />
                         </ListItemSecondaryAction>

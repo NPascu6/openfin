@@ -5,7 +5,7 @@
     "version": "11.69.42.14"
   },
   "startup_app": {
-    "name": "openfin-demo-app",
+    "name": "Covario Trading App",
     "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
     "url": "http://localhost:3000",
     "applicationIcon": "http://localhost:3000/favicon.ico",
@@ -15,12 +15,12 @@
     "autoShow": true,
     "defaultWidth": 1400,
     "minWidth": 480,
-    "defaultHeight": 400,
+    "defaultHeight": 150,
     "minHeight": 150,
     "defaultTop": 50,
     "resizable": true,
     "frame": false,
-    "saveWindowState": true,
+    "saveWindowState": false,
     "loadErrorMessage": "There was an error loading the application."
   },
   "services": [
@@ -37,8 +37,8 @@
   ],
   "shortcut": {
     "company": "",
-    "description": "openfin demo app",
-    "name": "Openfin demo app",
+    "description": "Covario Trading App",
+    "name": "Covario Trading App",
     "icon": "http://localhost:3000/favicon.ico"
   }
 }

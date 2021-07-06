@@ -4,7 +4,9 @@ import ForbiddenPage from "../pages/errors/403";
 import NotFoundPage from "../pages/errors/404";
 import MainWindow from "../pages/main-window/MainWindow";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import ChildWindow from "../pages/child-window/ChildWindow";
+import MarketDataWindow from "../pages/market-data-window/MarketDataWindow";
+import OtcTradingWindow from "../pages/otc-trading-window/OtcTradingWindow";
+import NewsFeedWindow from "../pages/news-feed-window/NewsFeedWindow";
 
 export interface RouteDefinition {
     path: string;
@@ -28,9 +30,21 @@ export const rootRouteDefinition: RouteDefinition =
                 icon: DashboardIcon,
             },
             {
-                path: '/child-window',
-                name: "Chanel Window Client",
-                page: ChildWindow,
+                path: '/market-data-window',
+                name: "Market Data Window Client",
+                page: MarketDataWindow,
+                icon: DashboardIcon,
+            },
+            {
+                path: '/otc-trading-window',
+                name: "Otc Trading Window Client",
+                page: OtcTradingWindow,
+                icon: DashboardIcon,
+            },
+            {
+                path: '/news-feed-window',
+                name: "News Feed Window Client",
+                page: NewsFeedWindow,
                 icon: DashboardIcon,
             }
         ]

@@ -36,7 +36,7 @@ const MainWindow: React.FC = () => {
     const dispatch = useDispatch();
     const {isDarkTheme} = useSelector((state: RootState) => state.app);
     const {childWindows, statuses} = useSelector((state: RootState) => state.mainChannel);
-    const {selectedInstruments} = useSelector((state: RootState) => state.instrument);
+    const {selectedInstruments, instruments} = useSelector((state: RootState) => state.instrument);
     const [numberOfChildWindows, setNumberOfChildWindows] = useState(0)
 
     const handleCloseAll = () => {
@@ -44,27 +44,6 @@ const MainWindow: React.FC = () => {
         closeChildWindows(application)
         dispatch(clearClients())
         setNumberOfChildWindows(0)
-    }
-
-    const createChildWindows = async () => {
-        let nrOfChildWindows = numberOfChildWindows
-        const app = await fin.Application.getCurrent();
-
-        let mainWindow = await fin.Window.getCurrent()
-        if (numberOfChildWindows < 3)
-            for (let i = 0; i < 3; i++) {
-                createInitialWindows(nrOfChildWindows, dispatch, setNumberOfChildWindows).then(async () => {
-                    let child = await app.getChildWindows()
-                    if (child)
-                        child[i].joinGroup(mainWindow)
-                })
-                nrOfChildWindows++
-                setNumberOfChildWindows(nrOfChildWindows)
-            }
-        else {
-            const application = fin.desktop.Application.getCurrent();
-            closeChildWindows(application)
-        }
     }
 
     const handleSignout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: boolean) => {
@@ -112,6 +91,33 @@ const MainWindow: React.FC = () => {
         }
     }, [selectedInstruments, provider])
 
+    useEffect(() => {
+        const createChildWindows = async () => {
+            let nrOfChildWindows = numberOfChildWindows
+            const app = await fin.Application.getCurrent();
+            let mainWindow = await fin.Window.getCurrent()
+            let mainWindowPositions = await mainWindow.getBounds()
+            if (numberOfChildWindows < 3)
+                for (let i = 0; i < 3; i++) {
+                    await createInitialWindows(mainWindowPositions, nrOfChildWindows, dispatch, setNumberOfChildWindows).then(async () => {
+                        let child = await app.getChildWindows()
+                        if (child)
+                            child[i].joinGroup(mainWindow)
+                    })
+                    nrOfChildWindows++
+                    setNumberOfChildWindows(nrOfChildWindows)
+                }
+            else {
+                const application = fin.desktop.Application.getCurrent();
+                closeChildWindows(application)
+            }
+        }
+
+        if(instruments && numberOfChildWindows === 0){
+            createChildWindows()
+        }
+    }, [instruments, numberOfChildWindows, dispatch])
+
     return (
         <Grid container>
             <Grid container>
@@ -134,11 +140,6 @@ const MainWindow: React.FC = () => {
                 </Button>
             </Grid>
             <Grid container>
-                <Grid item>
-                    <Button
-                        variant={"outlined"}
-                        size={"small"} onClick={() => createChildWindows()}>Create Child Windows</Button>
-                </Grid>
                 <Grid item>
                     <Button
                         variant={"outlined"}

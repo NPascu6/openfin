@@ -22,7 +22,7 @@ import {useLocation} from "react-use";
 import {useDocked, useMaximized} from "openfin-react-hooks";
 import {FullscreenSharp} from "@material-ui/icons";
 import SettingsIcon from '@material-ui/icons/Settings';
-import StockTicker from "../main-window/StockTickerContainer";
+import StockTicker from "../top-bar/StockTickerContainer";
 import Settings from "./Settings";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
             }),
-            maxHeight: '4em'
+            maxHeight: '4em',
         },
         title: {
             '-webkit-app-region': 'drag',
@@ -92,11 +92,11 @@ const Topbar = () => {
     }
 
     return (
-        <AppBar position="absolute" className={clsx(classes.appBar, "appBar")}>
+        <AppBar position="absolute" className={clsx(classes.appBar, "appBar")} style={{backgroundColor: location.pathname !== '/' ? '#343434' : theme.palette.background.default}}>
             <Grid container alignItems={"center"} style={{minHeight: '2em', maxHeight: '2em'}}>
-                <div className={classes.title}>
+                 <div className={classes.title}>
                     <Typography variant="body1" color="inherit" noWrap
-                                style={{color: location.pathname === '/' ? theme.palette.text.primary : theme.palette.background.default}}>
+                                style={{color: location.pathname === '/' ? theme.palette.text.primary : '#343434'}}>
                         {"COVARIO"}
                     </Typography>
                 </div>
@@ -129,9 +129,9 @@ const Topbar = () => {
                     <CloseIcon style={{color: theme.palette.text.secondary}}/>
                 </IconButton>
             </Grid>
-            <Grid container alignItems={"center"} style={{minHeight: '2em', maxHeight: '2em'}}>
+            {location.pathname === '/' && <Grid container alignItems={"center"} style={{minHeight: '2em', maxHeight: '2em'}}>
                 <StockTicker/>
-            </Grid>
+            </Grid>}
             <Settings/>
         </AppBar>
     );

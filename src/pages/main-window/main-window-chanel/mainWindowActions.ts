@@ -7,30 +7,32 @@ import {
 } from "../../../redux/slices/main-channel/mainChanelSlice";
 import {IChannelAction} from "openfin-react-hooks";
 import {Dispatch} from "react";
-import {getWindowConfig1} from "../../../common/utils";
+import {
+    getMarketDataWindowConfig,
+    getNewFeedWindowConfig,
+    getOtcTradingWindowConfig
+} from "../../../window-configs/WindowConfig";
 
-export const createInitialWindows = async (numberOfChildWindows: number, dispatch: (any: any) => any, setNumberOfChildWindows: (any: any) => any) => {
+export const createInitialWindows = async (mainWindowPositions: any, numberOfChildWindows: number, dispatch: (any: any) => any, setNumberOfChildWindows: (any: any) => any) => {
+    debugger
     switch (numberOfChildWindows) {
         case 0 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig1(450, 10, 1000, 400));
+            const newWindow = await window.fin.Window.create(getMarketDataWindowConfig(mainWindowPositions.bottom, mainWindowPositions.left, 900,500));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 1 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig1(450, 1004, 1000, 400));
+            const newWindow = await window.fin.Window.create(getOtcTradingWindowConfig(mainWindowPositions.bottom, mainWindowPositions.left +900, 500, 500));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
         }
         case 2 : {
-            const newWindow = await window.fin.Window.create(getWindowConfig1(900, 10, 1400, 200));
+            const newWindow = await window.fin.Window.create(getNewFeedWindowConfig(mainWindowPositions.bottom +500, mainWindowPositions.left, 1400, 200));
             dispatch(setWindow(newWindow));
             setNumberOfChildWindows(numberOfChildWindows + 1)
             break;
-        }
-        default: {
-
         }
     }
 };

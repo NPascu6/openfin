@@ -9,7 +9,7 @@ import Draggable from 'react-draggable';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/slices/rootSlice";
 import {setSettingsOpen} from "../../redux/slices/app/appSlice";
-import InstrumentList from "../main-window/InstrumentList";
+import InstrumentList from "../settings/InstrumentList";
 
 function PaperComponent(props: PaperProps) {
     return (

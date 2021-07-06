@@ -11,7 +11,7 @@ import {setSelectedInstruments} from "../../redux/slices/instrument/instrumentSl
 
 const CHANNEL_NAME = "MainChanel";
 
-const ChildWindow: React.FC = () => {
+const OtcTradingWindow: React.FC = () => {
     const dispatch = useDispatch()
     const {client} = useChannelClient(CHANNEL_NAME);
     const {childWindows} = useSelector((state: RootState) => state.mainChannel);
@@ -63,4 +63,4 @@ const ChildWindow: React.FC = () => {
     );
 };
 
-export default React.memo(ChildWindow);
+export default React.memo(OtcTradingWindow);
